@@ -3,7 +3,8 @@ This is the note (wiki) for the internship of Xhenis
 \*May 2020*\
 
 18/05:
-Fangchen: I send the convention de stage, some useful links and some documents to Xhenis to start the internship asap. 
+Fangchen: 1. I send the convention de stage, some useful links and some documents to Xhenis to start the internship asap. 
+	  2. I want to creat a place where we can exchange files, codes and figures. If Gitlab.paris13 is not avaible, then Github is a good tool
 
 
 
