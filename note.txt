@@ -5,6 +5,10 @@ This is the note (wiki) for the internship of Xhenis
 18/05:
 Fangchen: 1. I send the convention de stage, some useful links and some documents to Xhenis to start the internship asap. 
 	  2. I want to creat a place where we can exchange files, codes and figures. If Gitlab.paris13 is not avaible, then Github is a good tool
+	  3. We can start with the document restauration in which some research work are going on. Two things important: a) the mixing model, pay attention to the fact that the pixels are positive. b) Independent Assumption: I don't kown if the image sources recto verso are independent or not
+	  4. We can begin with a "Fake" mixing model (mixing of one block of images without mean value) to test the independent assumption
+	  5. Then we'll do something with the mixing model. Maybe this problem is easy
+	  6. For the desmoking problem, the first idea is to put it into the frame of multichannel separation: several blocks or several frames of video with hypothesis that the smoking is varing slowly
 
 
 
@@ -12,14 +16,13 @@ Fangchen: 1. I send the convention de stage, some useful links and some document
 
 
 
+\*Juin 2020*\
 
-Juin 2020
+\*July 2020*\
 
-July 2020
+\*August 2020*\
 
-August 2020
+\*Septembre 2020*\
 
-Septembre 2020
-
-Octobre 2020
+\*Octobre 2020*\
 
