@@ -8,7 +8,8 @@ Fangchen: 1. I send the convention de stage, some useful links and some document
 	  3. We can start with the document restauration in which some research work are going on. Two things important: a) the mixing model, pay attention to the fact that the pixels are positive. b) Independent Assumption: I don't kown if the image sources recto verso are independent or not
 	  4. We can begin with a "Fake" mixing model (mixing of one block of images without mean value) to test the independent assumption
 	  5. Then we'll do something with the mixing model. Maybe this problem is easy
-	  6. For the desmoking problem, the first idea is to put it into the frame of multichannel separation: several blocks or several frames of video with hypothesis that the smoking is varing slowly
+	  6. Why are the two source components correlated? A decomposition into a specific dictionary can reduce the indendency? This can also include the learning process for Xhenis
+	  7. For the desmoking problem, the first idea is to put it into the frame of multichannel separation: several blocks or several frames of video with hypothesis that the smoking is varing slowly.
 
 
 
