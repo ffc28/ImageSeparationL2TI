@@ -13,11 +13,12 @@ Fangchen: 1. I send the convention de stage, some useful links and some document
 26/05:
 Fangchen: I had a reunion with Xhenis with some questions in the paper: blind separation for document restauration (eq 5.2 and the source superposition factor):
 	  1. We talked about the source separation (bss) in general. The bss is usually treated in two scenarios, determined and underdetermined. In determined case, we use ICA, in underdetermined case, we use sparsity.
-	  2. We talked about the zero-mean problem: why do we usually remove the mean value of the observation before the separation? Is it suitable for images? What does the mean value of an image represent? Is it important?
-	  3. Even the negative value of a image pixel does not make sense, it does not block us from using negative values during the separation. But the authors of the paper think differently. Why?
+	  2. We talked about the zero-mean problem: why do we usually remove the mean value of the observation before the separation? (ambiguity problem? weighting problem?) Is it suitable for images? What does the mean value of an image represent? Is it important?
+	  3. Even the negative value of an image pixel does not make sense, it does not block us from using negative values during the separation. But the authors of the paper think differently. Why?
 	  4. We talked about the constrains on the mixing matrix. Normally we have a normalisation constrain on the column of the mixing matrix. But in the paper, they use a sum-row-to-one constrain. Why? Does it have sth to do with the background?
 	  5. We talked about the ambiguity problem of the separation. The permutation ambiguity is harmful when we deal with several separations (several blocks). Xhenis thinks that using superposed blocks can help. How does this paper do it?
 	  6. I think that the mathematical formuation in section 5 is there because they want to keep the images positive all the time and they have this sum-row-to-one constrain. Is it really necessary?
+	  7. We talked about the whitening pre-processing. Same question: is it suitable for images?
 
 
 
