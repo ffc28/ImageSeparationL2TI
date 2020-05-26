@@ -19,7 +19,8 @@ Fangchen: I had a reunion with Xhenis with some questions in the paper: blind se
 	  5. We talked about the ambiguity problem of the separation. The permutation ambiguity is harmful when we deal with several separations (several blocks). Xhenis thinks that using superposed blocks can help. How does this paper do it?
 	  6. I think that the mathematical formuation in section 5 is there because they want to keep the images positive all the time and they have this sum-row-to-one constrain. Is it really necessary?
 	  7. We talked about the whitening pre-processing. Same question: is it suitable for images?
-
+ 	  8. Xhenis thinks that the sum-row-to-one constrain on the mixing matrix can be linked to probability. It's a very interesting interpretaton. How can it help us see things more clearly?
+	
 
 
 
