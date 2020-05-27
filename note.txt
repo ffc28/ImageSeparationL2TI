@@ -1,5 +1,7 @@
 This is the note (wiki) for the internship of Xhenis 
 
+An available dataset for old document on line: https://www.isos.dias.ie/english/index.html
+
 \*May 2020*\
 
 18/05:
@@ -10,6 +12,7 @@ Fangchen: 1. I send the convention de stage, some useful links and some document
 	  5. Then we'll do something with the mixing model. Maybe this problem is easy
 	  6. Why are the two source components correlated? A decomposition into a specific dictionary can reduce the indenpendency? This can also include the learning process for Xhenis
 	  7. For the desmoking problem, the first idea is to put it into the frame of multichannel separation: several blocks or several frames of video with hypothesis that the smoking is varing slowly.
+
 26/05:
 Fangchen: I had a reunion with Xhenis with some questions in the paper: blind separation for document restauration (eq 5.2 and the source superposition factor):
 	  1. We talked about the source separation (bss) in general. The bss is usually treated in two scenarios, determined and underdetermined. In determined case, we use ICA, in underdetermined case, we use sparsity.
@@ -26,6 +29,8 @@ Fangchen: I had a reunion with Xhenis where we discussed about the paper blind s
 	  1. The sum-row-to-one constrain of the mixing matrix is just to satisfie the interval of the mixtures and the sources. However, it can not remove the scaling ambiguity
           2. My guess why they use this positivity constrain of the sources is due to the non-linear mixing model. We've to find way to verify if the local linear model is correct for zero-mean sources
 	  3. We want to investigate the correlation condition of the real sources. Xhenis thinks that the real sources could be naturally correlated (not just because they're not zero-mean)
+	  4. For image containing documents, do we have the saturation problem? I guess it's not like audio signals
+
 
 
 
@@ -40,4 +45,8 @@ Fangchen: I had a reunion with Xhenis where we discussed about the paper blind s
 \*Septembre 2020*\
 
 \*Octobre 2020*\
+
+\*Novembre 2020*\
+
+\*December 2020*\
 
