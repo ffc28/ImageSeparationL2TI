@@ -21,7 +21,11 @@ Fangchen: I had a reunion with Xhenis with some questions in the paper: blind se
 	  7. We talked about the whitening pre-processing. Same question: is it suitable for images?
  	  8. Xhenis thinks that the sum-row-to-one constrain on the mixing matrix can be linked to probability. It's a very interesting interpretaton. How can it help us see things more clearly?
 	
-
+27/05:
+Fangchen: I had a reunion with Xhenis where we discussed about the paper blind separation for document restauration
+	  1. The sum-row-to-one constrain of the mixing matrix is just to satisfie the interval of the mixtures and the sources. However, it can not remove the scaling ambiguity
+          2. My guess why they use this positivity constrain of the sources is due to the non-linear mixing model. We've to find way to verify if the local linear model is correct for zero-mean sources
+	  3. We want to investigate the correlation condition of the real sources. Xhenis thinks that the real sources could be naturally correlated (not just because they're not zero-mean)
 
 
 
