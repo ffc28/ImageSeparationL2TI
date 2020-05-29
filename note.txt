@@ -31,6 +31,11 @@ Fangchen: I had a reunion with Xhenis where we discussed about the paper blind s
 	  3. We want to investigate the correlation condition of the real sources. Xhenis thinks that the real sources could be naturally correlated (not just because they're not zero-mean)
 	  4. For image containing documents, do we have the saturation problem? I guess it's not like audio signals
 
+29/05:
+Fangchen: 1. With Xhenis, we look at the bss with images using sparsity. We looked at the Laplacian and dictionary learnig technique to make images sparse
+	  2. I suggest that, in a first time, Xhenis can use some source images (ground truth) to synthesis the mixtures using traditional model (zero mean, etc). Then apply the sparsity-based (Laplacian or Wavelet) method to separate the source
+	  3. Then in a second step, we will investigate the real-world model of document bleed-through and find a more adapted mxing model
+
 
 
 
