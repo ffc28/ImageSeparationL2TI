@@ -37,11 +37,16 @@ Fangchen: 1. With Xhenis, we look at the bss with images using sparsity. We look
 	  3. Then in a second step, we will investigate the real-world model of document bleed-through and find a more adapted mxing model
 
 
-
-
-
-
 \*Juin 2020*\
+
+02/06:
+Fangchen: 1. One possible idea: for now the document separation is based on ICA or dictionary learning based image inpaiting. I think we can combine them and use dictionary-based BSS for determined separation.
+	  2. The underdetermined BSS is another possible track
+
+
+
+
+
 
 \*July 2020*\
 
