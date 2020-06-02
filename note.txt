@@ -1,6 +1,8 @@
 This is the note (wiki) for the internship of Xhenis 
 
-An available dataset for old document on line: https://www.isos.dias.ie/english/index.html
+- An available dataset for old document on line: https://www.isos.dias.ie/english/index.html
+- https://scikit-learn.org/stable/index.html
+
 
 \*May 2020*\
 
@@ -41,7 +43,8 @@ Fangchen: 1. With Xhenis, we look at the bss with images using sparsity. We look
 
 02/06:
 Fangchen: 1. One possible idea: for now the document separation is based on ICA or dictionary learning based image inpaiting. I think we can combine them and use dictionary-based BSS for determined separation.
-	  2. The underdetermined BSS is another possible track
+	  2. This problem is already investigated in Abolghasemi, V., Ferdowsi, S., & Sanei, S. (2012). Blind separation of image sources via adaptive dictionary learning. IEEE Transactions on Image Processing, 21(6), 2921-2930. Then our contribution can be the convolutive (2D) model
+	  3. The underdetermined BSS is another possible track
 
 
 
