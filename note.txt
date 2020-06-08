@@ -53,6 +53,7 @@ Fangchen: 1. With Xhenis, we talked about the BCD (PALM) algorithm and the dicti
 	  3. We can compare the naive (sparsity in spatial domain of images) sparse method with ICA to see the difference
    	  4. We can start to use dictionary learning pack to learn some toy dictionary and to see if the implementation is realisable or not.
 	  5. We've to provide some quantitative measures for the evaluations (SDR, SIR and SAR). In the worst case, I translate the Matlab package to Python
+	  6. Xhenis should have access to the calulation cluster
 
 
 
