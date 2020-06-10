@@ -60,6 +60,7 @@ Fangchen: 1. With Xhenis, we talked about the BCD (PALM) algorithm and the dicti
 Azeddine: 1. For synthesis mixtures, the evaluations can be done with the help of ground truth images, but in real-world applications, the ground truth is not available.
           2. Instead of evaluating in a pixel-wise way the separated images, we should think of the statistical way. The idea is to compare the statistical distribution of the clearn image and the separated image
 	  3. Xhenis can start in a parallel way of studying the image separation and image evaluation.
+  	  4. Azeddine also talked about the multi-scale thing
 
 
 
