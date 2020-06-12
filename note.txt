@@ -2,6 +2,7 @@ This is the note (wiki) for the internship of Xhenis
 
 - An available dataset for old document on line: https://www.isos.dias.ie/english/index.html
 - https://scikit-learn.org/stable/index.html
+- Separation evaluation tool: https://craffel.github.io/mir_eval/ 
 
 
 \*May 2020*\
