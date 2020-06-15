@@ -6,7 +6,7 @@ import matplotlib.image as mpimg
 import scipy as sp
 import numpy as np
 from skimage.color import rgb2gray
-from sklearn.feature_extraction.image import extract_patches_2d
+from sklearn.feature_extraction.image import extract_patches_2d, PatchExtractor
 from sklearn.decomposition import MiniBatchDictionaryLearning
 from sklearn.feature_extraction.image import reconstruct_from_patches_2d
 
@@ -24,17 +24,18 @@ n = 255
 img1_gray_re = img1_gray[0:n, 0:n]
 img2_gray_re = img2_gray[0:n, 0:n]
 
-"""
 # show images
 plt.figure()
 plt.imshow(img1_gray_re, cmap='gray')
 plt.title("Ground truth 1")
 
+
 plt.figure()
 plt.imshow(img2_gray_re, cmap='gray')
 plt.title("Ground truth 2")
-plt.show"""
+plt.show
 
+"""
 # mixing the images
 source1 = np.matrix.flatten(img1_gray_re, 'F') #column wise
 source2 = np.matrix.flatten(img2_gray_re, 'F') #column wise
@@ -48,7 +49,7 @@ print("mixing_matrix = ", mixing_matrix)
 
 X = np.matmul(source.T, mixing_matrix)  # observations
 
-# reconstructiong the mixed images
+# reconstructing the mixed images
 X1 = X[:,0]
 X1 = np.reshape(X1, (n,n))
 
@@ -64,7 +65,7 @@ plt.imshow(X2.T, cmap='gray')
 plt.title("Mixed 2")
 plt.show
 
-"""
+
 # downsample for higher speed
 X1 = X1[::4, ::4] + X1[1::4, ::4] + X1[::4, 1::4] + X1[1::4, 1::4]
 X1 /= 4.0
@@ -77,22 +78,27 @@ plt.figure()
 plt.imshow(X2.T, cmap='gray')
 plt.title("downsampled 2")
 plt.show
+
+# downsample for higher speed
+img1_gray_re = img1_gray_re[::4, ::4] + img1_gray_re[1::4, ::4] + img1_gray_re[::4, 1::4] + img1_gray_re[1::4, 1::4]
+img1_gray_re /= 4.0
 """
 
 # Extract reference patches from the original images
 print('Extracting reference patches...')
 t0 = time()
-m = 16 #Check other sizes
+m = 8 #Check other sizes
 patch_size = (m, m)
 
 #TODO: try the other function with multiple images
-p1 = extract_patches_2d(img1_gray_re, patch_size)
-p2 = extract_patches_2d(img2_gray_re, patch_size)
-patches = np.concatenate((p1, p2), axis = 0)
+#p1 = extract_patches_2d(img1_gray_re, patch_size)
+patches = extract_patches_2d(img1_gray_re, patch_size)
+#print("Patches before reshaping:", patches.shape)
+#patches = np.concatenate((p1, p2), axis = 0)
 #print("before reshaping patches : ", p1.shape, p2.shape)
 patches = patches.reshape(patches.shape[0], -1)
-intercept = np.mean(patches, axis=0)
-patches -= intercept
+patches -= np.mean(patches, axis=0)
+patches /= np.std(patches, axis=0)
 print('done in %.2fs.' % (time() - t0))
 print(patches.shape)
 
@@ -122,8 +128,7 @@ def show_with_diff(image, reference, title):
     plt.figure(figsize=(5, 3.3))
     plt.subplot(1, 2, 1)
     plt.title('Image')
-    plt.imshow(image, vmin=0, vmax=1, cmap=plt.cm.gray,
-               interpolation='nearest')
+    plt.imshow(image, vmin=0, vmax=1, cmap=plt.cm.gray, interpolation='nearest')
     plt.xticks(())
     plt.yticks(())
     plt.subplot(1, 2, 2)
@@ -137,33 +142,47 @@ def show_with_diff(image, reference, title):
     plt.suptitle(title, size=16)
     plt.subplots_adjust(0.02, 0.02, 0.98, 0.79, 0.02, 0.2)
 
+
+
+# Extract noisy patches and reconstruct them using the dictionary
+
+print('Extracting noisy patches... ')
+t0 = time()
+data = extract_patches_2d(img2_gray_re, patch_size)
+data = data.reshape(data.shape[0], -1)
+intercept = np.mean(data, axis=0)
+data -= intercept
+print('done in %.2fs.' % (time() - t0))
+
+
+
 #TODO:try different parameters
 transform_algorithms = [
-    ('Orthogonal Matching Pursuit\n1 atom', 'omp',
-     {'transform_n_nonzero_coefs': 1}),
-    ('Orthogonal Matching Pursuit\n2 atoms', 'omp',
-     {'transform_n_nonzero_coefs': 2}),
-    ('Least-angle regression\n5 atoms', 'lars',
-     {'transform_n_nonzero_coefs': 5}),
+    ('Orthogonal Matching Pursuit\n1 atom', 'omp', {'transform_n_nonzero_coefs': 1}),
+    ('Orthogonal Matching Pursuit\n2 atoms', 'omp', {'transform_n_nonzero_coefs': 2}),
+    ('Orthogonal Matching Pursuit\n3 atoms', 'omp', {'transform_n_nonzero_coefs': 3}),
+    ('Least-angle regression\n5 atoms', 'lars', {'transform_n_nonzero_coefs': 5}),
     ('Thresholding\n alpha=0.1', 'threshold', {'transform_alpha': .1})]
+
+
 
 reconstructions = {}
 for title, transform_algorithm, kwargs in transform_algorithms:
     print(title + '...')
-    reconstructions[title] = X1.copy()
+    reconstructions[title] = img2_gray_re.copy()
     t0 = time()
     dico.set_params(transform_algorithm=transform_algorithm, **kwargs)
-    code = dico.transform(patches)
+    code = dico.transform(data)
+    #print("code shape =", code.shape)
     patch = np.dot(code, V)
-
     patch += intercept
-    patch = patch.reshape(len(patches), *patch_size)
+    patch = patch.reshape(len(data), *patch_size)
     if transform_algorithm == 'threshold':
         patch -= patch.min()
         patch /= patch.max()
     reconstructions[title][:,:] = reconstruct_from_patches_2d(patch, (n,n))
     dt = time() - t0
     print('done in %.2fs.' % dt)
-    show_with_diff(reconstructions[title], img1_gray_re, title + ' (time: %.1fs)' % dt)
+    show_with_diff(reconstructions[title], img2_gray_re, title + ' (time: %.1fs)' % dt)
 
 plt.show()
