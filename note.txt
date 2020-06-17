@@ -35,7 +35,7 @@ Fangchen: I had a reunion with Xhenis where we discussed about the paper blind s
 	  4. For image containing documents, do we have the saturation problem? I guess it's not like audio signals
 
 29/05:
-Fangchen: 1. With Xhenis, we look at the bss with images using sparsity. We looked at the Laplacian and dictionary learnig technique to make images sparse
+Fangchen: 1. With Xhenis, we look at the BSS with images using sparsity. We looked at the Laplacian and dictionary learnig technique to make images sparse
 	  2. I suggest that, in a first time, Xhenis can use some source images (ground truth) to synthesis the mixtures using traditional model (zero mean, etc). Then apply the sparsity-based (Laplacian or Wavelet) method to separate the source
 	  3. Then in a second step, we will investigate the real-world model of document bleed-through and find a more adapted mxing model
 
@@ -63,7 +63,17 @@ Azeddine: 1. For synthesis mixtures, the evaluations can be done with the help o
 	  3. Xhenis can start in a parallel way of studying the image separation and image evaluation.
   	  4. Azeddine also talked about the multi-scale thing
 
+16/06
+Fangchen: 1. In FastICA, instead of using the logcosh as the non-linearity to measure the non-gaussianity, the function cube is a better idea as it suits better the sparse source (sources with super-Gaussian distribution)
+          2. The image pyramid decomposition is a good way to deal with the mean value of the patches.
 
+
+17/06
+Azeddine: 1. Xhenis should make a plan of the internship as a function of the soutenance date etc
+ 	  2. Measuring the quality of an image is different from measuring the separation performance. We should concentrate on the similarity between the original source images and the estimated one
+          3. Xhenis'll prepare a presentation (some pages of slides) to present what she does during the week. This can be done once two weeks. This will help Xhenis to better organise the internship
+	  4. For ICA, we should start with simple examples (some source images that we know are independent) to see the efficiency of the FastICA or ICA method. 
+	  5. At the same time, we can try to use the block methods to test the FastICA method. Dividing the images into block is a good way to break the dependency between the images so that we can vectoris them.
 
 
 \*July 2020*\
