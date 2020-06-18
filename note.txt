@@ -52,7 +52,7 @@ Fangchen: 1. One possible idea: for now the document separation is based on ICA 
 Fangchen: 1. With Xhenis, we talked about the BCD (PALM) algorithm and the dictionary learning algorithm.
           2. We can use the ICA measurement to measure the independence level of old documents which is a big motivation of using sparsity-based method.
 	  3. We can compare the naive (sparsity in spatial domain of images) sparse method with ICA to see the difference
-   	  4. We can start to use dictionary learning pack to learn some toy dictionary and to see if the implementation is realisable or not.
+   	  4. We can start to use dictionary learning package to learn some toy dictionary and to see if the implementation is realisable or not.
      	  5. We talked about the Bayesian interpretation of the l2-l1 minimisation problem
 	  6. We've to provide some quantitative measures for the evaluations (SDR, SIR and SAR). In the worst case, I translate the Matlab package to Python
 	  7. Xhenis should have access to the calulation cluster
@@ -73,7 +73,18 @@ Azeddine: 1. Xhenis should make a plan of the internship as a function of the so
  	  2. Measuring the quality of an image is different from measuring the separation performance. We should concentrate on the similarity between the original source images and the estimated one
           3. Xhenis'll prepare a presentation (some pages of slides) to present what she does during the week. This can be done once two weeks. This will help Xhenis to better organise the internship
 	  4. For ICA, we should start with simple examples (some source images that we know are independent) to see the efficiency of the FastICA or ICA method. 
-	  5. At the same time, we can try to use the block methods to test the FastICA method. Dividing the images into block is a good way to break the dependency between the images so that we can vectoris them.
+	  5. At the same time, we can try to use the block methods to test the FastICA. Dividing the images into block is a good way to break the dependency between the images so that we can vectoris them.
+
+
+18/06
+Fangchen: 1. Xhenis starts using the package of randomized dependence coefficient to measure the inpendence between two signals (1d or 2d)
+	  2. In the paper of "A blind source separation technique for document restoration", the author suppose that the source images are of positive values and they don't remove the mean during the separation.
+   	  3. I thinks that it does not violate our mixing model where we remove the mean before the separation (because we suppose that the sources are of zero mean).
+	  4. Maybe we can do something like this: we first learn the dictionary from some clean document images to get the dictionary. Then we assume a linear mixing model of document images in a small block (the same block used for dictionary learning). Then we do the separation for each block with their own mixing matrix based on the learned dictionary
+	  5. This idea has a huge link with IVA: in IVA we have a linear separation problem for each frequency in the STFT domain. Here we have a linear separation problem for each column in the code domain. We can try to use Group-Lasso or WGL to introduce some correlation between blocks because we use overlapped blocks here. 
+  	  6. I'm not sure if we should use the same block in the dictionary learning part and the separation part. But why not? 
+     	  7. Find a way to add the pyramid decomposition. It's still unclear to me.
+	 
 
 
 \*July 2020*\
