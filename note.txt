@@ -84,6 +84,7 @@ Fangchen: 1. Xhenis starts using the package of randomized dependence coefficien
 	  5. This idea has a huge link with IVA: in IVA we have a linear separation problem for each frequency in the STFT domain. Here we have a linear separation problem for each column in the code domain. We can try to use Group-Lasso or WGL to introduce some correlation between blocks because we use overlapped blocks here. 
   	  6. I'm not sure if we should use the same block in the dictionary learning part and the separation part. But why not? 
      	  7. Find a way to add the pyramid decomposition. It's still unclear to me.
+	  8. We're now not exploiting any special properties of document images. Maybe we should stay in this way so that we can include medical images?
 	 
 
 
