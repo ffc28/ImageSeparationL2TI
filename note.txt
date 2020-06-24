@@ -93,7 +93,12 @@ Azeddine: 1. For the plan of Xhenis, it does not mean that we should not do any 
 	  4. The package RDC is maybe for random signal. Does it mean anything for determinist signals? We should know how it functions before using it.
 	  5. We don't usually change the sampling rate. When we want to change the number of samples, we change the scale of the signal.
 	  6. Xhenis can try the following: start with one signal and then get another dependent signal and see the performance of ICA.
-	  
+
+Xhenis:   1. Xhenis did a presentation where she shows what she did in the last few weeks
+   	  2. Xhenis reported a question of using the package of evaluation (SDR) and shows the problem of the SDR when the number of samples is changed when the sources signals are somehow correlated.
+	  3. Fangchen thinks it may due to the permutation problem.
+	  4. Fangchen suggests that Xhenis should first evaluation the mixtures to get a baseline of SDR and then see how FastICA improves the SDR.
+	  5. Xhenis continues to do the image separation with packages and pay attention to the permutation and scaling ambiguity problem.
 
 \*July 2020*\
 
