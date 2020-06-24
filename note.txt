@@ -86,7 +86,14 @@ Fangchen: 1. Xhenis starts using the package of randomized dependence coefficien
      	  7. Find a way to add the pyramid decomposition. It's still unclear to me.
 	  8. We're now not exploiting any special properties of document images. Maybe we should stay in this way so that we can include medical images?
 	 
-
+24/06
+Azeddine: 1. For the plan of Xhenis, it does not mean that we should not do any investigation during the experimenting phase. This should be flexiable
+	  2. Xhenis send the link of the timeline to everyone.
+  	  3. Fangchen should send to everyone a plan of the day before the meeting
+	  4. The package RDC is maybe for random signal. Does it mean anything for determinist signals? We should know how it functions before using it.
+	  5. We don't usually change the sampling rate. When we want to change the number of samples, we change the scale of the signal.
+	  6. Xhenis can try the following: start with one signal and then get another dependent signal and see the performance of ICA.
+	  
 
 \*July 2020*\
 
