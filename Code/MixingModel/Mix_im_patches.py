@@ -19,6 +19,9 @@ from time import time
 from skimage.util import view_as_windows, montage
 
 n = 256
+m = 64
+patch_size = (m, m)
+step = m # <m for overlapping patches
 
 # load images and convert them
 img1=mpimg.imread('flower1.jpg')
@@ -41,7 +44,17 @@ plt.imshow(img2_gray_re, cmap='gray')
 plt.title("Ground truth 2")
 plt.show
 
-# We mix them here
+
+# Extract reference patches
+
+ref_patches1 = view_as_windows(img1_gray_re, patch_size, step) #extract patches
+ref_patches1 = ref_patches1.reshape((-1, m, m))
+
+ref_patches2 = view_as_windows(img2_gray_re, patch_size, step) #extract patches
+ref_patches2 = ref_patches2.reshape((-1, m, m))
+
+
+# We mix the images here
 # create 2x(256*256) source matrix
 
 source1 = np.matrix(img1_gray_re)
@@ -69,7 +82,7 @@ print("mixing_matrix = ", mixing_matrix)
 
 X = np.matmul(mixing_matrix, source)
 
-# reconstructing the images
+# reconstructing the mixed images
 
 X1 = X[0,:]
 X1 = np.reshape(X1, (n,n))
@@ -90,80 +103,61 @@ plt.title("Mixed image 2")
 plt.show
 
 #extracting patches from the mixed images
-m = 64
-patch_size = (m, m)
-step = m # <m for overlapping patches
 
-patches1 = view_as_windows(X1.T, patch_size, step) #extract patches
-patches1 = patches1.reshape((-1, m, m))
+mix_patches1 = view_as_windows(X1.T, patch_size, step) #extract patches
+mix_patches1 = mix_patches1.reshape((-1, m, m))
 
-patches2 = view_as_windows(X2.T, patch_size, step) #extract patches
-patches2 = patches2.reshape((-1, m, m))
+
+mix_patches2 = view_as_windows(X2.T, patch_size, step) #extract patches
+mix_patches2 = mix_patches2.reshape((-1, m, m))
 
 # FastICA algorithm on the patches
 estimated_patches1 = []
 estimated_patches2 = []
-for p1, p2 in zip(patches1, patches2):
+for p1, p2, p3, p4 in zip(mix_patches1, mix_patches2, ref_patches1, ref_patches2):
     p1 = p1.flatten()
     p2 = p2.flatten()
 
-    p = np.stack((p1, p2))
+    mean1 = np.mean(p1)
+    mean2 = np.mean(p2)
+
+    p1 = p1 - mean1
+    p2 = p2 - mean2
+
+    mix_p = np.stack((p1, p2))
+
+    p3 = p3.flatten()
+    p4 = p4.flatten()
+
+    ref_p = np.stack((p3, p4))
     
     ica = FastICA(n_components=2)#, whiten=False)#, fun='cube')
-    source_estimated = ica.fit_transform(p.T)
+    source_estimated = ica.fit_transform(mix_p.T)
     mixing_estimated = ica.mixing_
+
+    sdr, sir, sar, perm = mir_eval.separation.bss_eval_sources(ref_p, source_estimated.T)
 
     s1 = source_estimated[:,0]
     s1 = np.reshape(s1, patch_size)
-    estimated_patches1.append(s1)
 
-    s2 = source_estimated[:,0]
+    s2 = source_estimated[:,1]
     s2 = np.reshape(s2, patch_size)
-    estimated_patches2.append(s2)
 
+    #check permutation ambiguity
+    if (np.array_equal(perm, [0, 1])):
+        s2 = s2 + mean1
+        s1 = s1 + mean2
 
-print(np.shape(estimated_patches1))
+        estimated_patches1.append(s2)
+        estimated_patches2.append(s1)
+    else:
+        s2 = s2 + mean2
+        s1 = s1 + mean1 
 
-print("mixing matrix estimated = ", mixing_estimated)
-"""
-#reshaping
-X1 = X[0,:]
-X1 = np.reshape(X1, (int(n/m),n*m))
+        estimated_patches1.append(s1)
+        estimated_patches2.append(s2)
 
-reconstruct_patches = view_as_windows(X1, (1,m*m), step = (1,m*m)) #extract patches
-
-X1 = [np.reshape(element, (int(n/m), m, m)) for element in reconstruct_patches]
-X1 = np.asarray(X1)
-X1 = np.reshape(X1, (-1, m, m))
-X1 = montage(X1)
-
-X2 = X[1,:]
-X2 = np.reshape(X2, (n,n))
-
-
-
-# FastICA algorithm
-
-ica = FastICA(n_components=2)#, fun='cube')
-source_estimated = ica.fit_transform(X.T)
-mixing_estimated = ica.mixing_
-
-print("mixing matrix estimated = ", mixing_estimated)
-
-# Reshape the estimated source images (from vectors into matrices)
-s1 = source_estimated[:,0]
-s1 = np.reshape(s1, (n,n))
-
-#print(s1.min(), s1.max(), s1.mean())
-
-s2 = source_estimated[:,1]
-s2 = np.reshape(s2, (n,n))
-
-#print(s2.min(), s2.max(), s2.mean())
-"""
-
-
-
+# reconstruct the estimated sources
 
 es1 = montage(estimated_patches1)
 es2 = montage(estimated_patches2)
