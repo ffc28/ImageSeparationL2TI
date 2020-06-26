@@ -115,7 +115,7 @@ print(np.linalg.norm(mix_patches1))
 # FastICA algorithm on the patches
 estimated_patches1 = []
 estimated_patches2 = []
-import pdb; pdb.set_trace()
+#import pdb; pdb.set_trace()
 
 for p1, p2, p3, p4 in zip(mix_patches1, mix_patches2, ref_patches1, ref_patches2):
     p1 = p1.flatten()
