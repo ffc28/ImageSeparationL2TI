@@ -110,25 +110,33 @@ mix_patches1 = mix_patches1.reshape((-1, m, m))
 
 mix_patches2 = view_as_windows(X2.T, patch_size, step) #extract patches
 mix_patches2 = mix_patches2.reshape((-1, m, m))
+print(np.linalg.norm(mix_patches1))
 
 # FastICA algorithm on the patches
 estimated_patches1 = []
 estimated_patches2 = []
+import pdb; pdb.set_trace()
+
 for p1, p2, p3, p4 in zip(mix_patches1, mix_patches2, ref_patches1, ref_patches2):
     p1 = p1.flatten()
     p2 = p2.flatten()
 
     mean1 = np.mean(p1)
     mean2 = np.mean(p2)
-
+    
     p1 = p1 - mean1
     p2 = p2 - mean2
 
     mix_p = np.stack((p1, p2))
 
-    p3 = p3.flatten()
-    p4 = p4.flatten()
-
+    p3 = p3.flatten()/np.linalg.norm(p3)
+    p4 = p4.flatten()/np.linalg.norm(p4)
+    
+    mean3 = np.mean(p3)
+    mean4 = np.mean(p4)
+    #print("p3 norm = ", np.linalg.norm(p3))
+    #print("p4 norm = ", np.linalg.norm(p4))
+    #print("mean3, 4 =", mean3, mean4)
     ref_p = np.stack((p3, p4))
     
     ica = FastICA(n_components=2)#, whiten=False)#, fun='cube')
@@ -138,6 +146,7 @@ for p1, p2, p3, p4 in zip(mix_patches1, mix_patches2, ref_patches1, ref_patches2
     sdr, sir, sar, perm = mir_eval.separation.bss_eval_sources(ref_p, source_estimated.T)
 
     s1 = source_estimated[:,0]
+    #print("s1 norm = ", np.linalg.norm(s1))
     s1 = np.reshape(s1, patch_size)
 
     s2 = source_estimated[:,1]
@@ -145,14 +154,14 @@ for p1, p2, p3, p4 in zip(mix_patches1, mix_patches2, ref_patches1, ref_patches2
 
     #check permutation ambiguity
     if (np.array_equal(perm, [0, 1])):
-        s2 = s2 + mean1
-        s1 = s1 + mean2
+        s2 = s2 + mean3
+        s1 = s1 + mean4
 
         estimated_patches1.append(s2)
         estimated_patches2.append(s1)
     else:
-        s2 = s2 + mean2
-        s1 = s1 + mean1 
+        s2 = s2 + mean4
+        s1 = s1 + mean3 
 
         estimated_patches1.append(s1)
         estimated_patches2.append(s2)
