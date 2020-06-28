@@ -9,12 +9,12 @@ This is the note (wiki) for the internship of Xhenis
 
 18/05:
 Fangchen: 1. I send the convention de stage, some useful links and some documents to Xhenis to start the internship asap. 
-	  2. I want to creat a place where we can exchange files, codes and figures. If Gitlab.paris13 is not avaible, then Github is a good tool
-	  3. We can start with the document restauration in which some research work are going on. Two things important: a) the mixing model, pay attention to the fact that the pixels are positive. b) Independent Assumption: I don't kown if the image sources recto verso are independent or not
+	  2. I want to create a place where we can exchange files, codes and figures. If Gitlab.paris13 is not available, then Github is a good tool
+	  3. We can start with the document restauration in which some research work are going on. Two things important: a) the mixing model, pay attention to the fact that the pixels are positive. b) Independent Assumption: I don't know if the image sources recto verso are independent or not
 	  4. We can begin with a "Fake" mixing model (mixing of one block of images without mean value) to test the independent assumption
 	  5. Then we'll do something with the mixing model. Maybe this problem is easy
-	  6. Why are the two source components correlated? A decomposition into a specific dictionary can reduce the indenpendency? This can also include the learning process for Xhenis
-	  7. For the desmoking problem, the first idea is to put it into the frame of multichannel separation: several blocks or several frames of video with hypothesis that the smoking is varing slowly.
+	  6. Why are the two source components correlated? A decomposition into a specific dictionary can reduce the independency? This can also include the learning process for Xhenis
+	  7. For the desmoking problem, the first idea is to put it into the frame of multichannel separation: several blocks or several frames of video with hypothesis that the smoking is varying slowly.
 
 26/05:
 Fangchen: I had a reunion with Xhenis with some questions in the paper: blind separation for document restauration (eq 5.2 and the source superposition factor):
@@ -23,27 +23,27 @@ Fangchen: I had a reunion with Xhenis with some questions in the paper: blind se
 	  3. Even the negative value of an image pixel does not make sense, it does not block us from using negative values during the separation. But the authors of the paper think differently. Why?
 	  4. We talked about the constrains on the mixing matrix. Normally we have a normalisation constrain on the column of the mixing matrix. But in the paper, they use a sum-row-to-one constrain. Why? Does it have sth to do with the background?
 	  5. We talked about the ambiguity problem of the separation. The permutation ambiguity is harmful when we deal with several separations (several blocks). Xhenis thinks that using superposed blocks can help. How does this paper do it?
-	  6. I think that the mathematical formuation in section 5 is there because they want to keep the images positive all the time and they have this sum-row-to-one constrain. Is it really necessary?
+	  6. I think that the mathematical formulation in section 5 is there because they want to keep the images positive all the time and they have this sum-row-to-one constrain. Is it really necessary?
 	  7. We talked about the whitening pre-processing. Same question: is it suitable for images?
  	  8. Xhenis thinks that the sum-row-to-one constrain on the mixing matrix can be linked to probability. It's a very interesting interpretaton. How can it help us see things more clearly?
 	
 27/05:
 Fangchen: I had a reunion with Xhenis where we discussed about the paper blind separation for document restauration
-	  1. The sum-row-to-one constrain of the mixing matrix is just to satisfie the interval of the mixtures and the sources. However, it can not remove the scaling ambiguity
+	  1. The sum-row-to-one constrain of the mixing matrix is just to satisfy the interval of the mixtures and the sources. However, it can not remove the scaling ambiguity
           2. My guess why they use this positivity constrain of the sources is due to the non-linear mixing model. We've to find way to verify if the local linear model is correct for zero-mean sources
 	  3. We want to investigate the correlation condition of the real sources. Xhenis thinks that the real sources could be naturally correlated (not just because they're not zero-mean)
 	  4. For image containing documents, do we have the saturation problem? I guess it's not like audio signals
 
 29/05:
-Fangchen: 1. With Xhenis, we look at the BSS with images using sparsity. We looked at the Laplacian and dictionary learnig technique to make images sparse
+Fangchen: 1. With Xhenis, we look at the BSS with images using sparsity. We looked at the Laplacian and dictionary learning technique to make images sparse
 	  2. I suggest that, in a first time, Xhenis can use some source images (ground truth) to synthesis the mixtures using traditional model (zero mean, etc). Then apply the sparsity-based (Laplacian or Wavelet) method to separate the source
-	  3. Then in a second step, we will investigate the real-world model of document bleed-through and find a more adapted mxing model
+	  3. Then in a second step, we will investigate the real-world model of document bleed-through and find a more adapted mixing model
 
 
 \*Juin 2020*\
 
 02/06:
-Fangchen: 1. One possible idea: for now the document separation is based on ICA or dictionary learning based image inpaiting. I think we can combine them and use dictionary-based BSS for determined separation.
+Fangchen: 1. One possible idea: for now the document separation is based on ICA or dictionary learning based image inpainting. I think we can combine them and use dictionary-based BSS for determined separation.
 	  2. This problem is already investigated in Abolghasemi, V., Ferdowsi, S., & Sanei, S. (2012). Blind separation of image sources via adaptive dictionary learning. IEEE Transactions on Image Processing, 21(6), 2921-2930. Then our contribution can be the convolutive (2D) model
 	  3. The underdetermined BSS is another possible track
 
@@ -52,10 +52,10 @@ Fangchen: 1. One possible idea: for now the document separation is based on ICA 
 Fangchen: 1. With Xhenis, we talked about the BCD (PALM) algorithm and the dictionary learning algorithm.
           2. We can use the ICA measurement to measure the independence level of old documents which is a big motivation of using sparsity-based method.
 	  3. We can compare the naive (sparsity in spatial domain of images) sparse method with ICA to see the difference
-   	  4. We can start to use dictionary learning package to learn some toy dictionary and to see if the implementation is realisable or not.
+   	  4. We can start to use dictionary learning package to learn some toy dictionary and to see if the implementation is realizable or not.
      	  5. We talked about the Bayesian interpretation of the l2-l1 minimisation problem
 	  6. We've to provide some quantitative measures for the evaluations (SDR, SIR and SAR). In the worst case, I translate the Matlab package to Python
-	  7. Xhenis should have access to the calulation cluster
+	  7. Xhenis should have access to the calculation cluster
 
 10/06:
 Azeddine: 1. For synthesis mixtures, the evaluations can be done with the help of ground truth images, but in real-world applications, the ground truth is not available.
@@ -73,11 +73,11 @@ Azeddine: 1. Xhenis should make a plan of the internship as a function of the so
  	  2. Measuring the quality of an image is different from measuring the separation performance. We should concentrate on the similarity between the original source images and the estimated one
           3. Xhenis'll prepare a presentation (some pages of slides) to present what she does during the week. This can be done once two weeks. This will help Xhenis to better organise the internship
 	  4. For ICA, we should start with simple examples (some source images that we know are independent) to see the efficiency of the FastICA or ICA method. 
-	  5. At the same time, we can try to use the block methods to test the FastICA. Dividing the images into block is a good way to break the dependency between the images so that we can vectoris them.
+	  5. At the same time, we can try to use the block methods to test the FastICA. Dividing the images into block is a good way to break the dependency between the images so that we can vectorise them.
 
 
 18/06
-Fangchen: 1. Xhenis starts using the package of randomized dependence coefficient to measure the inpendence between two signals (1d or 2d)
+Fangchen: 1. Xhenis starts using the package of randomized dependence coefficient to measure the independence between two signals (1d or 2d)
 	  2. In the paper of "A blind source separation technique for document restoration", the author suppose that the source images are of positive values and they don't remove the mean during the separation.
    	  3. I thinks that it does not violate our mixing model where we remove the mean before the separation (because we suppose that the sources are of zero mean).
 	  4. Maybe we can do something like this: we first learn the dictionary from some clean document images to get the dictionary. Then we assume a linear mixing model of document images in a small block (the same block used for dictionary learning). Then we do the separation for each block with their own mixing matrix based on the learned dictionary
@@ -87,7 +87,7 @@ Fangchen: 1. Xhenis starts using the package of randomized dependence coefficien
 	  8. We're now not exploiting any special properties of document images. Maybe we should stay in this way so that we can include medical images?
 	 
 24/06
-Azeddine: 1. For the plan of Xhenis, it does not mean that we should not do any investigation during the experimenting phase. This should be flexiable
+Azeddine: 1. For the plan of Xhenis, it does not mean that we should not do any investigation during the experimenting phase. This should be flexible
 	  2. Xhenis send the link of the timeline to everyone.
   	  3. Fangchen should send to everyone a plan of the day before the meeting
 	  4. The package RDC is maybe for random signal. Does it mean anything for determinist signals? We should know how it functions before using it.
