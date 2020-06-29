@@ -169,7 +169,7 @@ for mixp1, mixp2, refp1, refp2 in zip(mix_patches1, mix_patches2, ref_patches1, 
     source_estimated[0,:] = n1*source_estimated[0,:]+m1
     source_estimated[1,:] = n2*source_estimated[1,:]+m2
     
-    if (np.mean(sdr) - np.mean(sdr_ref)) < 1:
+    if (np.mean(sdr) - np.mean(sdr_ref)) < 100:
         print("Using original patch")
         source_estimated[0,:] = refp1.flatten()
         source_estimated[1,:] = refp2.flatten()
