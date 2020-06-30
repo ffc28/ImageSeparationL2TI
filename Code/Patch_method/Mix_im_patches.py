@@ -37,6 +37,8 @@ img2_gray = rgb2gray(img2)
 img1_gray_re = img1_gray[0:n,0:n]
 img2_gray_re = img2_gray[0:n,0:n]
 
+img2_gray_re = np.fliplr(img2_gray_re)
+
 plt.figure()
 plt.imshow(img1_gray_re, cmap='gray')
 plt.title("Ground truth 1")
@@ -79,6 +81,10 @@ mixing_matrix = [[1, 0.5],[0.5, 1]]
 # X = source * mixing_matrix - The mixed images
 
 X = np.matmul(mixing_matrix, source)
+(sdr_ref, sir, sar, perm) = mmetrics.bss_eval_sources(np.asarray(source), np.asarray(X))
+print("***")
+print(sdr_ref)
+print("***")
 
 # reconstructing the mixed images
 X1 = X[0,:]
@@ -93,37 +99,6 @@ mix_patches1 = mix_patches1.reshape((-1, m, m))
 
 mix_patches2 = patchify(X2.T, patch_size, step)
 mix_patches2 = mix_patches2.reshape((-1, m, m))
-
-"""
-def oracle_perm(S_ref, S):
-
-    # remove the mean value and normalise the vectors
-    S[0,:] = S[0,:] - np.mean(S[0,:])
-    S[1,:] = S[1,:] - np.mean(S[1,:])   
-    S[0,:] = S[0,:]/np.linalg.norm(S[0,:])
-    S[1,:] = S[1,:]/np.linalg.norm(S[1,:])
-    
-    S_ref[0,:] = S_ref[0,:] - np.mean(S_ref[0,:])
-    S_ref[1,:] = S_ref[1,:] - np.mean(S_ref[1,:])   
-    S_ref[0,:] = S_ref[0,:]/np.linalg.norm(S_ref[0,:])
-    S_ref[1,:] = S_ref[1,:]/np.linalg.norm(S_ref[1,:])
-    # covariance matrix
-    R = np.dot(S_ref, S.T)
-    Rinvab = 1 - np.abs(R)
-    m = Munkres();
-    index = m.compute(Rinvab)
-    
-    if index[0]==(0,1):
-        #S = S[[1,0],:]
- 
-    R = np.dot(S_ref,S.T)
-    if R[0,0]<0:
-        S[0,:]=-S[0,:]
-    if R[1,1]<0:
-        S[1,:]=-S[1,:]
- 
-    return S
-"""
 
 # FastICA algorithm on the patches
 estimated_patches1 = []
@@ -142,16 +117,13 @@ for mixp1, mixp2, refp1, refp2 in zip(mix_patches1, mix_patches2, ref_patches1, 
 
     ref_p = np.stack((refp1.flatten(), refp2.flatten()))
     
-    ica = FastICA(n_components=2, fun = 'cube')#, whiten=False)#, fun='cube')
+    ica = FastICA(n_components=2, fun = 'cube', max_iter = 20000)#, whiten=False)#, fun='cube')
     source_estimated = ica.fit_transform(mix_p.T)
     mixing_estimated = ica.mixing_
 
     # Prepare for the permutation here
-    #source_estimated = oracle_perm(ref_p, source_estimated.T)
     source_estimated = source_estimated.T
-
-    # remove the original mean
-    
+    # remove the original mean   
     ref_p[0,:] = ref_p[0,:] - np.mean(ref_p[0,:])
     ref_p[1,:] = ref_p[1,:] - np.mean(ref_p[1,:])   
     
@@ -161,8 +133,7 @@ for mixp1, mixp2, refp1, refp2 in zip(mix_patches1, mix_patches2, ref_patches1, 
     print(sdr)
     print(perm)
 
-    # permute here
-    
+    # permute here  
     source_estimated = source_estimated[perm,:]
     mixing_estimated = mixing_estimated[:,perm]
 
@@ -176,7 +147,7 @@ for mixp1, mixp2, refp1, refp2 in zip(mix_patches1, mix_patches2, ref_patches1, 
     source_estimated[0,:] = n1*source_estimated[0,:]+m1
     source_estimated[1,:] = n2*source_estimated[1,:]+m2
     
-    if (np.mean(sdr) - np.mean(sdr_ref)) < 1:
+    if (np.mean(sdr) - np.mean(sdr_ref)) < -100:
         print("Using original patch")
         source_estimated[0,:] = refp1.flatten()
         source_estimated[1,:] = refp2.flatten()
@@ -211,3 +182,11 @@ plt.figure()
 plt.imshow(es2, cmap='gray')
 plt.title("Estimated source 2")
 plt.show()
+
+est1 = es1.flatten('F') #column wise
+est2 = es2.flatten('F')
+
+est = np.stack((est1, est2))
+
+(sdr, sir, sar, perm) = mmetrics.bss_eval_sources(np.asarray(source), np.asarray(est))
+print(sdr)
