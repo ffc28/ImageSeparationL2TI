@@ -18,7 +18,7 @@ Fangchen: 1. I send the convention de stage, some useful links and some document
 
 26/05:
 Fangchen: I had a reunion with Xhenis with some questions in the paper: blind separation for document restauration (eq 5.2 and the source superposition factor):
-	  1. We talked about the source separation (bss) in general. The bss is usually treated in two scenarios, determined and underdetermined. In determined case, we use ICA, in underdetermined case, we use sparsity.
+	  1. We talked about the source separation (BSS) in general. The BSS is usually treated in two scenarios, determined and underdetermined. In determined case, we use ICA, in underdetermined case, we use sparsity.
 	  2. We talked about the zero-mean problem: why do we usually remove the mean value of the observation before the separation? (ambiguity problem? weighting problem?) Is it suitable for images? What does the mean value of an image represent? Is it important?
 	  3. Even the negative value of an image pixel does not make sense, it does not block us from using negative values during the separation. But the authors of the paper think differently. Why?
 	  4. We talked about the constrains on the mixing matrix. Normally we have a normalisation constrain on the column of the mixing matrix. But in the paper, they use a sum-row-to-one constrain. Why? Does it have sth to do with the background?
@@ -40,11 +40,13 @@ Fangchen: 1. With Xhenis, we look at the BSS with images using sparsity. We look
 	  3. Then in a second step, we will investigate the real-world model of document bleed-through and find a more adapted mixing model
 
 
+
+
 \*Juin 2020*\
 
 02/06:
 Fangchen: 1. One possible idea: for now the document separation is based on ICA or dictionary learning based image inpainting. I think we can combine them and use dictionary-based BSS for determined separation.
-	  2. This problem is already investigated in Abolghasemi, V., Ferdowsi, S., & Sanei, S. (2012). Blind separation of image sources via adaptive dictionary learning. IEEE Transactions on Image Processing, 21(6), 2921-2930. Then our contribution can be the convolutive (2D) model
+	  2. This problem is already investigated in Abolghasemi, V., Ferdowsi, S., & Sanei, S. (2012). Blind separation of image sources via adaptive dictionary learning. IEEE Transactions on Image Processing, 21(6), 2921-2930. Then our contribution can be the convolutional (2D) model
 	  3. The underdetermined BSS is another possible track
 
 
@@ -64,7 +66,7 @@ Azeddine: 1. For synthesis mixtures, the evaluations can be done with the help o
   	  4. Azeddine also talked about the multi-scale thing
 
 16/06
-Fangchen: 1. In FastICA, instead of using the logcosh as the non-linearity to measure the non-gaussianity, the function cube is a better idea as it suits better the sparse source (sources with super-Gaussian distribution)
+Fangchen: 1. In FastICA, instead of using the logcosh as the non-linearity to measure the nongaussianity, the function cube is a better idea as it suits better the sparse source (sources with super-Gaussian distribution)
           2. The image pyramid decomposition is a good way to deal with the mean value of the patches.
 
 
@@ -73,7 +75,7 @@ Azeddine: 1. Xhenis should make a plan of the internship as a function of the so
  	  2. Measuring the quality of an image is different from measuring the separation performance. We should concentrate on the similarity between the original source images and the estimated one
           3. Xhenis'll prepare a presentation (some pages of slides) to present what she does during the week. This can be done once two weeks. This will help Xhenis to better organise the internship
 	  4. For ICA, we should start with simple examples (some source images that we know are independent) to see the efficiency of the FastICA or ICA method. 
-	  5. At the same time, we can try to use the block methods to test the FastICA. Dividing the images into block is a good way to break the dependency between the images so that we can vectorise them.
+	  5. At the same time, we can try to use the block methods to test the FastICA. Dividing the images into block is a good way to break the dependency between the images so that we can vectorize them.
 
 
 18/06
@@ -99,6 +101,17 @@ Xhenis:   1. Xhenis did a presentation where she shows what she did in the last 
 	  3. Fangchen thinks it may due to the permutation problem.
 	  4. Fangchen suggests that Xhenis should first evaluation the mixtures to get a baseline of SDR and then see how FastICA improves the SDR.
 	  5. Xhenis continues to do the image separation with packages and pay attention to the permutation and scaling ambiguity problem.
+
+30/06
+Fangchen: 1. The first experiment shows that diving the images into patches is not a bad idea for separation: the separation performance (SDR) with the whole image is less than the patch method.
+	  2. In order to make sure of all this, we have to try with different mixing matrix, different document images, different non-linearity and eventually different method
+ 	  3. I can code the sparsity-based method and compare it with FastICA for with/without patch settings
+	  4. The permutation alignment is important: for now we're using oracle permutation. In practice, we can either use the estimated mixing matrix or the estimated sources to perform the permutation
+	  5. The scaling ambiguity could be difficult. But I think it can be solved based on some assumptions of the mixing matrix (e.g. the first element of the mixing matrix should be 1) 
+	  6. For now, we're using instantaneous mixing process. Later on, we can try with non-linear mixing process. For me, the patch method could be much better in this setting
+	  7. I don't think there're other papers about this patch issue for separation problem. To verify!
+
+	
 
 \*July 2020*\
 
