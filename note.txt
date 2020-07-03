@@ -108,12 +108,18 @@ Fangchen: 1. The first experiment shows that diving the images into patches is n
  	  3. I can code the sparsity-based method and compare it with FastICA for with/without patch settings
 	  4. The permutation alignment is important: for now we're using oracle permutation. In practice, we can either use the estimated mixing matrix or the estimated sources to perform the permutation
 	  5. The scaling ambiguity could be difficult. But I think it can be solved based on some assumptions of the mixing matrix (e.g. the first element of the mixing matrix should be 1) 
-	  6. For now, we're using instantaneous mixing process. Later on, we can try with non-linear mixing process. For me, the patch method could be much better in this setting
+	  6. For now, we're using instantaneous mixing process. Later on, we can try with non-linear mixing process (paper: Low quality document image modeling and enhancement). For me, the patch method could be much better in this setting
 	  7. I don't think there're other papers about this patch issue for separation problem. To verify!
 
 	
 
 \*July 2020*\
+02/07
+Fangchen: 1. Xhenis has some results of the comparison between the patch method and no-patch method for separation. She puts all the results on the wiki page.
+	  2. With these results, I think we can now try the sparsity-based method and/or dictionary learning based method
+ 	  3. For now, the multi-scale is not put into use. Maybe it can help us with the scaling ambiguity?
+	  4. The permutation can be maybe solved with the assumptions on the mixing matrix
+
 
 \*August 2020*\
 
