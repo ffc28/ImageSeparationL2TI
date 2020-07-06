@@ -19,7 +19,7 @@ import museval.metrics as mmetrics
 from time import time
 from skimage.util import view_as_windows, montage
 
-n = 256
+n = 512
 m = 64
 image_size = (n, n)
 patch_size = (m, m)
