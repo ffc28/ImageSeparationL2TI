@@ -7,7 +7,7 @@ from skimage.color import rgb2gray
 from rdc import rdc
 
 
-def load_images(image1, image2, n, show_images = True):
+def load_images(image1, image2, n, x1=0, y1=0, x2=0, y2=0, show_images = True):
     """
     Function that loads, converts, rescale and show the images 
     
@@ -16,6 +16,10 @@ def load_images(image1, image2, n, show_images = True):
     image1: the first image to be loaded
     image2: the second image to be loaded
     n: int, the width, length of the image
+    x1: int, 0 by default, shifts image1 along the x-axis
+    y1: int, 0 by default, shifts image1 along the y-axis
+    x2: int, 0 by default, shifts image2 along the x-axis
+    y2: int, 0 by default, shifts image2 along the y-axis
     show_images: boolean, True by default, plots the images if True
 
     Return
@@ -31,8 +35,8 @@ def load_images(image1, image2, n, show_images = True):
     img1_gray = rgb2gray(img1)
     img2_gray = rgb2gray(img2)
 
-    img1_gray_re = img1_gray[0:n, 0:n]
-    img2_gray_re = img2_gray[90:90+n, 100:100+n]
+    img1_gray_re = img1_gray[y1:y1+n, x1:x1+n]
+    img2_gray_re = img2_gray[y2:y2+n, x2:x2+n]
 
     if show_images == True:
         plt.figure()
