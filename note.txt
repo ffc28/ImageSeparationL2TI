@@ -61,7 +61,7 @@ Fangchen: 1. With Xhenis, we talked about the BCD (PALM) algorithm and the dicti
 
 10/06:
 Azeddine: 1. For synthesis mixtures, the evaluations can be done with the help of ground truth images, but in real-world applications, the ground truth is not available.
-          2. Instead of evaluating in a pixel-wise way the separated images, we should think of the statistical way. The idea is to compare the statistical distribution of the clearn image and the separated image
+          2. Instead of evaluating in a pixel-wise way the separated images, we should think of the statistical way. The idea is to compare the statistical distribution of the clean image and the separated image
 	  3. Xhenis can start in a parallel way of studying the image separation and image evaluation.
   	  4. Azeddine also talked about the multi-scale thing
 
@@ -107,8 +107,8 @@ Fangchen: 1. The first experiment shows that diving the images into patches is n
 	  2. In order to make sure of all this, we have to try with different mixing matrix, different document images, different non-linearity and eventually different method
  	  3. I can code the sparsity-based method and compare it with FastICA for with/without patch settings
 	  4. The permutation alignment is important: for now we're using oracle permutation. In practice, we can either use the estimated mixing matrix or the estimated sources to perform the permutation
-	  5. The scaling ambiguity could be difficult. But I think it can be solved based on some assumptions of the mixing matrix (e.g. the first element of the mixing matrix should be 1) 
-	  6. For now, we're using instantaneous mixing process. Later on, we can try with non-linear mixing process (paper: Low quality document image modeling and enhancement). For me, the patch method could be much better in this setting
+	  5. The scaling ambiguity could be difficult. But I think it can be solved based on some assumptions of the mixing matrix (e.g. the first element of the mixing matrix should be 1, or the sum of each column is 1, to verify) 
+	  6. For now, we're using instantaneous mixing process. Later on, we can try with non-linear mixing process (paper: Low quality document image modeling and enhancement). For me, the patch method could be much better in this setting.
 	  7. I don't think there're other papers about this patch issue for separation problem. To verify!
 
 	
@@ -119,6 +119,16 @@ Fangchen: 1. Xhenis has some results of the comparison between the patch method 
 	  2. With these results, I think we can now try the sparsity-based method and/or dictionary learning based method
  	  3. For now, the multi-scale is not put into use. Maybe it can help us with the scaling ambiguity?
 	  4. The permutation can be maybe solved with the assumptions on the mixing matrix
+
+
+09/07
+Fangchen: 1. Xhenis's results show that patch method depend on the image used. I think patch method could lead to better separation if the source images are somehow correlated (high RDC). The patch method relax the mixing matrix for each patch and plays with the non-stationarity of images. But I think it's still random, and the results depend on the images used.
+	  2. RDC is suitable for random signals like images or audio, not determinist signals
+	  3. The patch methods should be much better if we're considering non-stationary and non-linear mixing model. I'll take a look and try to code the two models
+	  4. But we have to know why the non-stationary and non-linear mixing model can be linearly approximated in a small region.
+	  5. The non-stationarity of images can be dealt with the DCT or dictionary-based methods in which small patch is used. But at the same time the mixing matrix is not relaxed.
+	  6. The advantages of sparsity and dictionary-based methods is that they can deal with correlated images.
+	  7. Maybe we can stick to the linear model for synthesized mixtures and patch method for real-world images?
 
 
 \*August 2020*\
