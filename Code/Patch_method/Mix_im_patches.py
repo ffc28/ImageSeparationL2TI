@@ -28,8 +28,8 @@ patch_size = (m, m)
 step = 32 # <m for overlapping patches
 
 # load images and convert them
-img1=mpimg.imread('pic1.png')
-img2=mpimg.imread('pic2.png')
+img1=mpimg.imread('pic9.png')
+img2=mpimg.imread('pic10.png')
 
 img1_gray = rgb2gray(img1)
 img2_gray = rgb2gray(img2)
