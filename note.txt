@@ -130,11 +130,16 @@ Fangchen: 1. Xhenis's results show that patch method depend on the image used. I
 	  6. The advantages of sparsity and dictionary-based methods is that they can deal with correlated images.
 	  7. Maybe we can stick to the linear model for synthesized mixtures and patch method for real-world images?
 
+
 15/07:
 Azeddine: 1. The figure that Xhenis has presented has limited number of points: more experiments should be added. It might not be the best way to link all the points together
 	  2. When we try with natural images (document images), we don't know the statistical characteristics about the images. We might want to precede in a controlled manner
 	  3. Eventually, we should consider color images. Color images can potentially help the separation as it is linked to diversity.
 	  4. Xhenis synthesis a report before next Monday.  
+
+Fangchen: 1. It would be interesting to compare the RDC before and after the transform (DCT or dictionary)
+
+
 
 
 \*August 2020*\
