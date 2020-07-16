@@ -140,6 +140,16 @@ Azeddine: 1. The figure that Xhenis has presented has limited number of points: 
 Fangchen: 1. It would be interesting to compare the RDC before and after the transform (DCT or dictionary)
 
 
+16/07:
+Fangchen: 1. It would be interesting to compare the sparsity level vs the correlation level of the estimated images
+	  2. It seems that the plug-in methods work for determined case for image sources. But why? In theory, we can use all the denoising methods that we want
+	  3. It seems that the plug-in method depend on the condition number of the mixing matrix. Maybe it's a good idea to do the whitening processing. But if we do that, can we still deal with the partially correlated sources?
+	  4. Are there "learning"-based denoising methods?
+	  5. One of the advantages of plug-in is maybe to deal with the color images using the color images denoising methods.
+	  6. If plug-in methods work, then we need to concentrate on the mixing model. The linear stationary model is too simple. 
+	  7. We should of course compare the plug-in dictionary method with the analysis and synthesis dictionary method
+
+
 
 
 \*August 2020*\
