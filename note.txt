@@ -148,6 +148,7 @@ Fangchen: 1. It would be interesting to compare the sparsity level vs the correl
 	  5. One of the advantages of plug-in is maybe to deal with the color images using the color images denoising methods.
 	  6. If plug-in methods work, then we need to concentrate on the mixing model. The linear stationary model is too simple. 
 	  7. We should of course compare the plug-in dictionary method with the analysis and synthesis dictionary method
+	  8. One way of choosing the plugin method is maybe based on the evaluation method (image quality evaluation)
 
 
 
