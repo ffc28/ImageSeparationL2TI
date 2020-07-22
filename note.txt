@@ -142,15 +142,26 @@ Fangchen: 1. It would be interesting to compare the RDC before and after the tra
 
 16/07:
 Fangchen: 1. It would be interesting to compare the sparsity level vs the correlation level of the estimated images
-	  2. It seems that the plug-in methods work for determined case for image sources. But why? In theory, we can use all the denoising methods that we want
+	  2. It seems that the plug-in methods work for determined case for image sources. But why? In theory, we can use all the de-noising methods that we want
 	  3. It seems that the plug-in method depend on the condition number of the mixing matrix. Maybe it's a good idea to do the whitening processing. But if we do that, can we still deal with the partially correlated sources?
-	  4. Are there "learning"-based denoising methods?
-	  5. One of the advantages of plug-in is maybe to deal with the color images using the color images denoising methods.
+	  4. Are there "learning"-based de-noising methods?
+	  5. One of the advantages of plug-in is maybe to deal with the color images using the color images de-noising methods.
 	  6. If plug-in methods work, then we need to concentrate on the mixing model. The linear stationary model is too simple. 
 	  7. We should of course compare the plug-in dictionary method with the analysis and synthesis dictionary method
 	  8. One way of choosing the plugin method is maybe based on the evaluation method (image quality evaluation)
 
 
+21/07:
+Fangchen: 1. I think the method of three projection is a good way of taking into account the image source during the separation. We can try with TV, non-local mean, wavelet-based method and dictionary-learning based method
+	  
+
+22/07:
+Azeddine: 1. The report of Xhenis is not pedagogical enough.
+	  2. Next week he will send Xhenis the version with his remarks
+	  3. It's important to generalize the 1D separation method into 2D, meaning that we take into account the property of images
+	  4. It's important to do the blind evaluation without ground truth. Xhenis can at least do some experiments now on the wavelets coefficients of the clean images and do some investigations on the distribution of the wavelet coefficients. Normally, they follow a Beta distribution.
+	  5. Azeddine shares the references about this point
+	  
 
 
 \*August 2020*\
