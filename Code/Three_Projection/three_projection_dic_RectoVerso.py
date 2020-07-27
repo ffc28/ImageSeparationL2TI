@@ -1,6 +1,5 @@
 #Trying to use the dictionary learning
 
-from time import time
 import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
 import scipy as sp
@@ -18,62 +17,65 @@ from math import floor
 
 # load images and convert them
 n = 256
-pic_set = 1
-img_train1=mpimg.imread('./images/set'+ str(pic_set) + '_pic1.png')
-img_train_gray1 = rgb2gray(img_train1) # the value is between 0 and 1
-
-# Extract reference patches from the first image
-print('Extracting reference patches...')
-t0 = time()
 m = 8 # Check other sizes
 image_size = (n, n)
 patch_size = (m, m)
 step = 4
 
+pic_set = 7
+img_train1=mpimg.imread('./images/set'+ str(pic_set) + '_pic1.png')
+img_train_gray1 = rgb2gray(img_train1) # the value is between 0 and 1
+
+print('Learning the dictionary for recto and verso images...')
+# Extract reference patches from the first image
+
 patches1 = patchify(img_train_gray1, patch_size, step)
 initial_patch_size = patches1.shape
 patches1 = patches1.reshape(-1, patch_size[0] * patch_size[1])
 
-img_train2=mpimg.imread('./images/set'+ str(pic_set) + '_pic2.png')
-img_train_gray2 = rgb2gray(img_train2) # the value is between 0 and 1
-patches2 = patchify(img_train_gray2, patch_size, step)
-patches2 = patches2.reshape(-1, patch_size[0] * patch_size[1])
+patches_recto = patches1
+patches_recto -= np.mean(patches_recto, axis=0) # remove the mean
+patches_recto /= np.std(patches_recto, axis=0) # normalise each patch
 
-pic_set = 2
-img_train3=mpimg.imread('./images/set'+ str(pic_set) + '_pic1.png')
-img_train_gray3 = rgb2gray(img_train3) # the value is between 0 and 1
-patches3 = patchify(img_train_gray3, patch_size, step)
-patches3 = patches3.reshape(-1, patch_size[0] * patch_size[1])
-
-img_train4=mpimg.imread('./images/set'+ str(pic_set) + '_pic2.png')
-img_train_gray4 = rgb2gray(img_train4) # the value is between 0 and 1
-patches4 = patchify(img_train_gray4, patch_size, step)
-patches4 = patches4.reshape(-1, patch_size[0] * patch_size[1])
-
-#patches = patches1
-patches = np.concatenate((patches1, patches2, patches3, patches4), axis = 0)
-
-patches -= np.mean(patches, axis=0) # remove the mean
-patches /= np.std(patches, axis=0) # normalise each patch
-print('done in %.2fs.' % (time() - t0))
-
-# Learn the dictionary from reference patches
-
-print('Learning the dictionary...')
-t0 = time()
-dico = MiniBatchDictionaryLearning(n_components=100, alpha=1, n_iter=400) #TODO:check with different parameters
-V = dico.fit(patches).components_
-dt = time() - t0
-print('done in %.2fs.' % dt)
+print('Learning the recto dictionary...')
+dico_recto = MiniBatchDictionaryLearning(n_components=100, alpha=1, n_iter=400) #TODO:check with different parameters
+V_recto = dico_recto.fit(patches_recto).components_
 
 # plot the dictionary
 plt.figure(figsize=(8, 6))
-for i, comp in enumerate(V[:100]):
+for i, comp in enumerate(V_recto[:100]):
     plt.subplot(10, 10, i + 1)
     plt.imshow(comp.reshape(patch_size), cmap=plt.cm.gray_r,interpolation='nearest')
     plt.xticks(())
     plt.yticks(())
-plt.suptitle('Dictionary learned from patches\n' + 'Train time %.1fs on %d patches' % (dt, len(patches)), fontsize=16)
+plt.suptitle('Recto dictionary learned from patches')
+plt.subplots_adjust(0.08, 0.02, 0.92, 0.85, 0.08, 0.23)
+
+img_train2=mpimg.imread('./images/set'+ str(pic_set) + '_pic2.png')
+img_train_gray2 = rgb2gray(img_train2) # the value is between 0 and 1
+
+# Flip to get the verso images
+img_train_gray2 = np.fliplr(img_train_gray2)
+
+patches2 = patchify(img_train_gray2, patch_size, step)
+patches2 = patches2.reshape(-1, patch_size[0] * patch_size[1])
+
+patches_verso = patches2
+patches_verso -= np.mean(patches_verso, axis=0) # remove the mean
+patches_verso /= np.std(patches_verso, axis=0) # normalise each patch
+
+print('Learning the verso dictionary...')
+dico_verso = MiniBatchDictionaryLearning(n_components=100, alpha=1, n_iter=400) #TODO:check with different parameters
+V_verso = dico_verso.fit(patches_verso).components_
+
+# plot the dictionary
+plt.figure(figsize=(8, 6))
+for i, comp in enumerate(V_verso[:100]):
+    plt.subplot(10, 10, i + 1)
+    plt.imshow(comp.reshape(patch_size), cmap=plt.cm.gray_r,interpolation='nearest')
+    plt.xticks(())
+    plt.yticks(())
+plt.suptitle('Verso dictionary learned from patches')
 plt.subplots_adjust(0.08, 0.02, 0.92, 0.85, 0.08, 0.23)
 
 
@@ -117,7 +119,7 @@ print(mixing_matrix)
 
 X = np.matmul(mixing_matrix, source)
 
-def Dic_proj_one(data, n_coef):
+def Dic_proj_recto(data, n_coef):
     """
     The dictionary projection method
     """
@@ -126,10 +128,30 @@ def Dic_proj_one(data, n_coef):
     intercept = np.mean(data, axis=0)
     data -= intercept 
 
-    dico.set_params(transform_algorithm = 'omp', transform_n_nonzero_coefs = n_coef)
-    code = dico.transform(data)
+    dico_recto.set_params(transform_algorithm = 'omp', transform_n_nonzero_coefs = n_coef)
+    code = dico_recto.transform(data)
 
-    patch = np.dot(code, V)
+    patch = np.dot(code, V_recto)
+    patch += intercept
+    patch = np.reshape(patch, initial_patch_size)
+
+    im_re = unpatchify(np.asarray(patch), image_size)
+
+    return im_re
+
+def Dic_proj_verso(data, n_coef):
+    """
+    The dictionary projection method
+    """
+    data = patchify(data, patch_size, step)
+    data = data.reshape(-1, patch_size[0] * patch_size[1])
+    intercept = np.mean(data, axis=0)
+    data -= intercept 
+
+    dico_verso.set_params(transform_algorithm = 'omp', transform_n_nonzero_coefs = n_coef)
+    code = dico_verso.transform(data)
+
+    patch = np.dot(code, V_verso)
     patch += intercept
     patch = np.reshape(patch, initial_patch_size)
 
@@ -142,8 +164,8 @@ def Dic_proj(S, n_coeff):
     S1 = np.reshape(S[0,:], image_size)
     S2 = np.reshape(S[1,:], image_size)
     
-    S1 = Dic_proj_one(S1, n_coeff)
-    S2 = Dic_proj_one(S2, n_coeff)
+    S1 = Dic_proj_recto(S1, n_coeff)
+    S2 = Dic_proj_verso(S2, n_coeff)
     
     S[0,:] = np.reshape(S1, (1, n*n))
     S[1,:] = np.reshape(S2, (1, n*n))
@@ -200,7 +222,7 @@ for it in np.arange(max_it):
     # Se = whiten_projection(non_linear1(data_projection(X,Se)))
     # Se = whiten_projection(data_projection(X,Se))
     
-    cost_it[0,it] = np.linalg.norm(X - np.dot(np.dot(X,Se.T), Se), ord = 'fro')
+    cost_it[0,it] = np.linalg.norm(X - np.dot(np.dot(X,Se.T), Se),ord = 'fro')
     
     Se_inv = np.dot(np.linalg.inv(np.dot(X, Se.T)),X)
     (sdr, sir, sar, perm) = mmetrics.bss_eval_sources(np.asarray(source), Se_inv)
@@ -221,5 +243,3 @@ plt.grid()
 plt.show
 
 print(sdr)
-
-

@@ -26,9 +26,9 @@ image_size = (n, n)
 
 
 # load the source here
-pic_set = 10
-img1=mpimg.imread('./images/set'+ str(pic_set) + '_pic1.png')
-img2=mpimg.imread('./images/set'+ str(pic_set) + '_pic2.png')
+pic_set = 1
+img1=mpimg.imread('./images_hard/set'+ str(pic_set) + '_pic1.png')
+img2=mpimg.imread('./images_hard/set'+ str(pic_set) + '_pic2.png')
 
 img1_gray = rgb2gray(img1) # the value is between 0 and 1
 img2_gray = rgb2gray(img2)
@@ -54,11 +54,13 @@ print('Covariance matrix is: ')
 print(np.matmul(source,source.T))
 
 # randomly generated mixing matrix
-np.random.seed(0)
-mixing_matrix = np.random.randn(2,2)
+#np.random.seed(0)
+#mixing_matrix = np.random.randn(2,2)
+#mixing_matrix = np.array([[0.36, 0.66], [0.03, 0.95]])
+mixing_matrix = np.array([[1, 0.5], [0.5, 1]])
 print('Mixing matrix is: ')
 print(mixing_matrix)
-#mixing_matrix = np.array([[1, 0.5], [0.3, 1]])
+
 
 # X = source * mixing_matrix - The mixed images
 
@@ -70,8 +72,8 @@ def data_projection(X,S):
     This functions does the data projection with the equation X = AS
     """
     A = np.dot(S, X.T)
-    S = np.dot(A,X)
-    R = np.dot(A.T, A)
+    S = np.dot(A, X)
+    R = np.dot(A, A.T)
     return np.dot(np.linalg.inv(R),S)
 
 def whiten_projection(S):
@@ -105,7 +107,7 @@ def TV_proj(S, lambda_this):
 
 def Wavelet_proj(S, lambda_this):
     """
-    This function does the TV projection
+    This function does the Wavelet projection
     """
     S1 = np.reshape(S[0,:], image_size)
     S2 = np.reshape(S[1,:], image_size)
@@ -124,7 +126,7 @@ def Wavelet_proj(S, lambda_this):
 
 def Nonlocal_proj(S, lambda_this):
     """
-    This function does the TV projection
+    This function does the Non local mean projection
     """
     S1 = np.reshape(S[0,:], image_size)
     S2 = np.reshape(S[1,:], image_size)
@@ -144,7 +146,7 @@ def Nonlocal_proj(S, lambda_this):
 
 def BM3D_proj(S, lambda_this):
     """
-    This function does the TV projection
+    This function does the BM3D projection
     """
     S1 = np.reshape(S[0,:], image_size)
     S2 = np.reshape(S[1,:], image_size)
@@ -185,7 +187,7 @@ print("Reference SIR is: ", sir_ref)
 lambda_max = 0.02
 #lambda_final = lambda_max
 lambda_final = 0.00002
-max_it = 200
+max_it = 50
 lambda_v = np.logspace(np.log10(lambda_max),np.log10(lambda_final),max_it)
 
 #Se = np.random.randn(2, n*n) 
@@ -200,7 +202,7 @@ for it in np.arange(max_it):
     # we performe three projections
     # Se = whiten_projection(soft_proximal(data_projection(X, Se),lambda_v[it]))
     # Se = TV_proj(data_projection(X,Se), lambda_v[it])
-    Se = whiten_projection(TV_proj(data_projection(X,Se), lambda_v[it]))
+    Se = whiten_projection(Wavelet_proj(data_projection(X,Se), lambda_v[it]))
     # Se = whiten_projection(non_linear1(data_projection(X,Se)))
     # Se = whiten_projection(data_projection(X,Se))
     
@@ -224,10 +226,8 @@ plt.title('SDR for iterations')
 plt.grid()
 plt.show
 
-
 s1 = Se[0,:]
 s1 = np.reshape(s1, (n,n))
-
 
 s2 = Se[1,:]
 s2 = np.reshape(s2, (n,n))
