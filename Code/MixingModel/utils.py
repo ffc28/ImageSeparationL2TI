@@ -177,11 +177,12 @@ def Put_in_order(C,PR):
     return PR, order
                 
     
-def sparsity_sep(X, A, S, max_it, lambda_max, lambda_final):
+def sparsity_sep(X, A, S, max_it, lambda_max, lambda_final, stop_criteria):
     """
     A function for the sparsity-based method
     It works only for 2 sources 2 mixtures
     """
+    S_old = np.copy(S)
     # get the value of all the lambda
     lambda_v = np.logspace(np.log10(lambda_max),np.log10(lambda_final),max_it)
     # Iterations begin here
@@ -190,18 +191,28 @@ def sparsity_sep(X, A, S, max_it, lambda_max, lambda_final):
         # Lipshitz constant
         L = np.linalg.norm(A, ord = 2)
         # update S
-        grad = np.dot(-A.T, X.T - np.dot(A,S))
+        grad = np.dot(-A.T, X - np.dot(A,S))
         S = prox_l1(S - grad/L,lambda_this/L)
         # update A
-        L_A = np.linalg.norm(np.dot(S, S.T))
+        L_A = np.linalg.norm(np.dot(S, np.conjugate(S.T)))
         # 
         #print(L_A)
         #grad_A = np.dot(-(X.T - np.dot(A,S)),S.T)
         #A = A - grad_A/L_A
-        A = np.dot(X.T, S.T)
+        A = np.real(np.dot(X, np.conjugate(S.T)))
         A[:,0] = A[:,0]/np.linalg.norm(A[:,0])
         A[:,1] = A[:,1]/np.linalg.norm(A[:,1])    
         A[np.isnan(A)]=0
         S[np.isnan(S)]=0
         
+        if np.linalg.norm(S - S_old, ord = 'fro') < stop_criteria:
+            print('Convergences reached')
+            print('The real number of iteration is', it)
+            break
+        
+        S_old = np.copy(S)
+        
     return S, A    
+
+
+

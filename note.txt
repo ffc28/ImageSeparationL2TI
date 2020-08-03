@@ -170,6 +170,7 @@ Fangchen: 1. It seems that for "hard" sources, ICA and soft thresholding based t
 	  3. Are those sources close to a Gaussian distribution? Yes, I used the Kurtosis to measure it.
 	  4. We should try with GMCA in Python
 
+
 \*August 2020*\
 
 
