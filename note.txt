@@ -25,7 +25,7 @@ Fangchen: I had a reunion with Xhenis with some questions in the paper: blind se
 	  5. We talked about the ambiguity problem of the separation. The permutation ambiguity is harmful when we deal with several separations (several blocks). Xhenis thinks that using superposed blocks can help. How does this paper do it?
 	  6. I think that the mathematical formulation in section 5 is there because they want to keep the images positive all the time and they have this sum-row-to-one constrain. Is it really necessary?
 	  7. We talked about the whitening pre-processing. Same question: is it suitable for images?
- 	  8. Xhenis thinks that the sum-row-to-one constrain on the mixing matrix can be linked to probability. It's a very interesting interpretaton. How can it help us see things more clearly?
+ 	  8. Xhenis thinks that the sum-row-to-one constrain on the mixing matrix can be linked to probability. It's a very interesting interpretation. How can it help us see things more clearly?
 	
 27/05:
 Fangchen: I had a reunion with Xhenis where we discussed about the paper blind separation for document restauration
@@ -159,12 +159,21 @@ Fangchen: 1. I think the method of three projection is a good way of taking into
 Azeddine: 1. The report of Xhenis is not pedagogical enough.
 	  2. Next week he will send Xhenis the version with his remarks
 	  3. It's important to generalize the 1D separation method into 2D, meaning that we take into account the property of images
-	  4. It's important to do the blind evaluation without ground truth. Xhenis can at least do some experiments now on the wavelets coefficients of the clean images and do some investigations on the distribution of the wavelet coefficients. Normally, they follow a Beta distribution.
+	  4. It's important to do the blind evaluation without ground truth. Xhenis can at least do some experiments now on the wavelets coefficients of the clean images and do some investigations on the distribution of the wavelet coefficients. Normally, they follow a Beta distribution? (Generalized Gaussian distribution?)
 	  5. Azeddine shares the references about this point
 	  
 
 
+31/07:
+Fangchen: 1. It seems that for "hard" sources, ICA and soft thresholding based three projections method does not work. Find out why
+	  2. Before doing that, we can try Infomax. If Infomax does not work for "hard" sources, then we can begin the investigations
+	  3. Are those sources close to a Gaussian distribution? Yes, I used the Kurtosis to measure it.
+	  4. We should try with GMCA in Python
+
 \*August 2020*\
+
+
+
 
 \*Septembre 2020*\
 
