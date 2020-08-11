@@ -65,12 +65,12 @@ Azeddine: 1. For synthesis mixtures, the evaluations can be done with the help o
 	  3. Xhenis can start in a parallel way of studying the image separation and image evaluation.
   	  4. Azeddine also talked about the multi-scale thing
 
-16/06
+16/06:
 Fangchen: 1. In FastICA, instead of using the logcosh as the non-linearity to measure the nongaussianity, the function cube is a better idea as it suits better the sparse source (sources with super-Gaussian distribution)
           2. The image pyramid decomposition is a good way to deal with the mean value of the patches.
 
 
-17/06
+17/06:
 Azeddine: 1. Xhenis should make a plan of the internship as a function of the soutenance date etc
  	  2. Measuring the quality of an image is different from measuring the separation performance. We should concentrate on the similarity between the original source images and the estimated one
           3. Xhenis'll prepare a presentation (some pages of slides) to present what she does during the week. This can be done once two weeks. This will help Xhenis to better organise the internship
@@ -78,7 +78,7 @@ Azeddine: 1. Xhenis should make a plan of the internship as a function of the so
 	  5. At the same time, we can try to use the block methods to test the FastICA. Dividing the images into block is a good way to break the dependency between the images so that we can vectorize them.
 
 
-18/06
+18/06:
 Fangchen: 1. Xhenis starts using the package of randomized dependence coefficient to measure the independence between two signals (1d or 2d)
 	  2. In the paper of "A blind source separation technique for document restoration", the author suppose that the source images are of positive values and they don't remove the mean during the separation.
    	  3. I thinks that it does not violate our mixing model where we remove the mean before the separation (because we suppose that the sources are of zero mean).
@@ -88,7 +88,7 @@ Fangchen: 1. Xhenis starts using the package of randomized dependence coefficien
      	  7. Find a way to add the pyramid decomposition. It's still unclear to me.
 	  8. We're now not exploiting any special properties of document images. Maybe we should stay in this way so that we can include medical images?
 	 
-24/06
+24/06:
 Azeddine: 1. For the plan of Xhenis, it does not mean that we should not do any investigation during the experimenting phase. This should be flexible
 	  2. Xhenis send the link of the timeline to everyone.
   	  3. Fangchen should send to everyone a plan of the day before the meeting
@@ -102,7 +102,7 @@ Xhenis:   1. Xhenis did a presentation where she shows what she did in the last 
 	  4. Fangchen suggests that Xhenis should first evaluation the mixtures to get a baseline of SDR and then see how FastICA improves the SDR.
 	  5. Xhenis continues to do the image separation with packages and pay attention to the permutation and scaling ambiguity problem.
 
-30/06
+30/06:
 Fangchen: 1. The first experiment shows that diving the images into patches is not a bad idea for separation: the separation performance (SDR) with the whole image is less than the patch method.
 	  2. In order to make sure of all this, we have to try with different mixing matrix, different document images, different non-linearity and eventually different method
  	  3. I can code the sparsity-based method and compare it with FastICA for with/without patch settings
@@ -114,14 +114,14 @@ Fangchen: 1. The first experiment shows that diving the images into patches is n
 	
 
 \*July 2020*\
-02/07
+02/07:
 Fangchen: 1. Xhenis has some results of the comparison between the patch method and no-patch method for separation. She puts all the results on the wiki page.
 	  2. With these results, I think we can now try the sparsity-based method and/or dictionary learning based method
  	  3. For now, the multi-scale is not put into use. Maybe it can help us with the scaling ambiguity?
 	  4. The permutation can be maybe solved with the assumptions on the mixing matrix
 
 
-09/07
+09/07:
 Fangchen: 1. Xhenis's results show that patch method depend on the image used. I think patch method could lead to better separation if the source images are somehow correlated (high RDC). The patch method relax the mixing matrix for each patch and plays with the non-stationarity of images. But I think it's still random, and the results depend on the images used.
 	  2. RDC is suitable for random signals like images or audio, not determinist signals
 	  3. The patch methods should be much better if we're considering non-stationary and non-linear mixing model. I'll take a look and try to code the two models
@@ -171,9 +171,16 @@ Fangchen: 1. It seems that for "hard" sources, ICA and soft thresholding based t
 	  4. We should try with GMCA in Python
 
 
+
 \*August 2020*\
-04/08
+04/08:
 Fangchen: 1. Maybe we can try with DnCNN for denoising. But it seems it has nothing to do with document images. Maybe we can have two papers in the end and one cites another? One paper about deep learning based image separation another is about chirality dictionary learning based document separation?
+
+
+05/08:
+Fangchen:  1. Later on, we can try this deep learning based method: https://github.com/SaoYan/DnCNN-PyTorch
+
+
 
 
 
