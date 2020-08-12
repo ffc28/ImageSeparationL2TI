@@ -64,7 +64,7 @@ patches_recto /= np.std(patches_recto, axis=0) # normalise each patch
 print('Learning the recto dictionary...')
 dico_recto = MiniBatchDictionaryLearning(n_components=100, alpha=1, n_iter=400) #TODO:check with different parameters
 V_recto = dico_recto.fit(patches_recto).components_
-
+"""
 # plot the dictionary
 plt.figure(figsize=(8, 6))
 for i, comp in enumerate(V_recto[:100]):
@@ -74,7 +74,7 @@ for i, comp in enumerate(V_recto[:100]):
     plt.yticks(())
 plt.suptitle('Recto dictionary learned from patches')
 plt.subplots_adjust(0.08, 0.02, 0.92, 0.85, 0.08, 0.23)
-
+"""
 
 pic_set = 1
 img_train1=mpimg.imread('./images/set'+ str(pic_set) + '_pic1.png')
@@ -116,7 +116,7 @@ patches_verso /= np.std(patches_verso, axis=0) # normalise each patch
 print('Learning the verso dictionary...')
 dico_verso = MiniBatchDictionaryLearning(n_components=100, alpha=1, n_iter=400) #TODO:check with different parameters
 V_verso = dico_verso.fit(patches_verso).components_
-
+"""
 # plot the dictionary
 plt.figure(figsize=(8, 6))
 for i, comp in enumerate(V_verso[:100]):
@@ -126,10 +126,10 @@ for i, comp in enumerate(V_verso[:100]):
     plt.yticks(())
 plt.suptitle('Verso dictionary learned from patches')
 plt.subplots_adjust(0.08, 0.02, 0.92, 0.85, 0.08, 0.23)
-
+"""
 
 ## load the source here
-pic_set = 1
+pic_set = 2
 img1=mpimg.imread('./images_hard/set'+ str(pic_set) + '_pic1.png')
 img2=mpimg.imread('./images_hard/set'+ str(pic_set) + '_pic2.png')
 
@@ -293,10 +293,9 @@ X = np.dot(W, X)
 # mixing_matrix_norm[:,1] = mixing_matrix_norm[:,1]/np.linalg.norm(mixing_matrix_norm[:,1])
 (sdr_ref, sir_ref, sar, perm) = mmetrics.bss_eval_sources(np.asarray(source), np.asarray(X))
 # mix = [[0.6992, 0.7275], [0.4784, 0.5548]] #or use the matrix from the paper
-print("Reference SDR is: ")
-print(sdr_ref)
+print('The mean value of the reference SDR is: ', np.mean(sdr_ref))
 
-max_it = 20
+max_it = 120
 #Se = np.random.randn(2, n*n) 
 Se = np.copy(X)  
 cost_it = np.zeros((1, max_it)) 
@@ -304,13 +303,13 @@ SDR_it = np.zeros((2, max_it))
 SIR_it = np.zeros((2, max_it)) 
 SAR_it = np.zeros((2, max_it)) 
 
-num_coeff_begin = 3
-num_coeff_final = 3
+num_coeff_begin = 2
+num_coeff_final = 7
 num_coeff_v = np.floor(np.linspace(num_coeff_begin, num_coeff_final, max_it))
-sigma = 2e-7
+sigma = 2e-3
 Se_old = np.copy(Se)
 for it in np.arange(max_it):
-    print(it)  
+    # print(it)  
     # we performe three projections
     # Se = whiten_projection(soft_proximal(data_projection(X, Se),lambda_v[it]))
     # Se = whiten_projection(Dic_proj_single(data_projection(X,Se), num_coeff_v[it]))
@@ -339,7 +338,8 @@ Se = np.dot(WW, X)
 (sdr, sir, sar, perm) = mmetrics.bss_eval_sources(np.asarray(source), Se)
 
 Se = Dic_proj_single(Se, num_coeff_v[it], sigma)
-print(sdr)
+print('The mean value of the SDR is: ', np.mean(sdr))
+print('The SDR improvement is: ', np.mean(sdr) - np.mean(sdr_ref))
 """
 plt.figure()
 plt.subplot(211)
@@ -353,7 +353,7 @@ plt.plot(np.mean(SDR_it, axis = 0))
 plt.title('SDR for iterations Dictionary learning')
 plt.grid()
 plt.show
-"""
+
 s1 = Se[0,:]
 s1 = np.reshape(s1, (n,n))
 
@@ -370,6 +370,6 @@ plt.imshow(s2.T, cmap='gray')
 plt.title("Estimated source 2 with Sparse")
 plt.show()
 
-
+"""
 
 

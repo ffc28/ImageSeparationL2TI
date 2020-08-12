@@ -52,7 +52,7 @@ for pic_set in np.arange(N_sources):
     separation_method = 'wavelet'
     sigma = 5e-3
     sigma_final = 1e-5
-    max_it = 80
+    max_it = 300
     separation_matrix = three_projection_method.three_projection_demix(X, max_it = max_it, method = separation_method, threshold_value = sigma, threshold_final = sigma_final)   
     # get the estimated sources with the separation matrix
     Se = np.dot(separation_matrix, X)   
@@ -76,8 +76,8 @@ for pic_set in np.arange(N_sources):
     print('Here is the third algorithm')
     separation_method = 'TV'
     sigma = 2e-3
-    sigma_final = 2e-3
-    max_it = 100
+    sigma_final = 1e-5
+    max_it = 300
     separation_matrix = three_projection_method.three_projection_demix(X, max_it = max_it, method = separation_method, threshold_value = sigma, threshold_final = sigma_final)   
     # get the estimated sources with the separation matrix
     # print(np.dot(separation_matrix, separation_matrix.T))
@@ -88,11 +88,11 @@ for pic_set in np.arange(N_sources):
     
     
 plt.figure()
-plt.plot(Kur_it[0,:], SDR_soft1_imp[0,: ], 'k*')   
+plt.plot(SDR_soft1_imp[0,: ], 'k*')   
 
 # plt.plot(Kur_it[0,:], SDR_ica_imp[0,: ], 'r*')    
 
-plt.plot(Kur_it[0,:], SDR_soft2_imp[0,: ], 'b*')   
+plt.plot(SDR_soft2_imp[0,: ], 'b*')   
  
 plt.grid()
 plt.show
