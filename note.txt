@@ -14,7 +14,7 @@ Fangchen: 1. I send the convention de stage, some useful links and some document
 	  4. We can begin with a "Fake" mixing model (mixing of one block of images without mean value) to test the independent assumption
 	  5. Then we'll do something with the mixing model. Maybe this problem is easy
 	  6. Why are the two source components correlated? A decomposition into a specific dictionary can reduce the independency? This can also include the learning process for Xhenis
-	  7. For the desmoking problem, the first idea is to put it into the frame of multichannel separation: several blocks or several frames of video with hypothesis that the smoking is varying slowly.
+	  7. For the de-smoking problem, the first idea is to put it into the frame of multichannel separation: several blocks or several frames of video with hypothesis that the smoking is varying slowly.
 
 26/05:
 Fangchen: I had a reunion with Xhenis with some questions in the paper: blind separation for document restauration (eq 5.2 and the source superposition factor):
@@ -174,13 +174,14 @@ Fangchen: 1. It seems that for "hard" sources, ICA and soft thresholding based t
 
 \*August 2020*\
 04/08:
-Fangchen: 1. Maybe we can try with DnCNN for denoising. But it seems it has nothing to do with document images. Maybe we can have two papers in the end and one cites another? One paper about deep learning based image separation another is about chirality dictionary learning based document separation?
+Fangchen: 1. Maybe we can try with DnCNN for de-noising. But it seems it has nothing to do with document images. Maybe we can have two papers in the end and one cites another? One paper about deep learning based image separation another is about chirality dictionary learning based document separation?
 
 
 05/08:
 Fangchen:  1. Later on, we can try this deep learning based method: https://github.com/SaoYan/DnCNN-PyTorch
 
-
+17/08:
+Fangchen:  1. 
 
 
 
