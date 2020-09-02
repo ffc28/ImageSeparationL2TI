@@ -55,9 +55,21 @@ img_train_gray4 = rgb2gray(img_train4) # the value is between 0 and 1
 patches4 = patchify(img_train_gray4, patch_size, step)
 patches4 = patches4.reshape(-1, patch_size[0] * patch_size[1])
 
+pic_set = 5
+img_train5=mpimg.imread('./images/set'+ str(pic_set) + '_pic1.png')
+img_train_gray5 = rgb2gray(img_train5) # the value is between 0 and 1
+patches5 = patchify(img_train_gray5, patch_size, step)
+patches5 = patches5.reshape(-1, patch_size[0] * patch_size[1])
+
+pic_set = 6
+img_train6=mpimg.imread('./images/set'+ str(pic_set) + '_pic1.png')
+img_train_gray6 = rgb2gray(img_train6) # the value is between 0 and 1
+patches6 = patchify(img_train_gray6, patch_size, step)
+patches6 = patches6.reshape(-1, patch_size[0] * patch_size[1])
+
 ########
 #patches_recto = patches1
-patches_recto = np.concatenate((patches1, patches2, patches3, patches4), axis = 0)
+patches_recto = np.concatenate((patches1, patches2, patches3, patches4, patches5, patches6), axis = 0)
 patches_recto -= np.mean(patches_recto, axis=0) # remove the mean
 patches_recto /= np.std(patches_recto, axis=0) # normalise each patch
 
@@ -129,7 +141,7 @@ plt.subplots_adjust(0.08, 0.02, 0.92, 0.85, 0.08, 0.23)
 """
 
 ## load the source here
-pic_set = 2
+pic_set = 4
 img1=mpimg.imread('./images_hard/set'+ str(pic_set) + '_pic1.png')
 img2=mpimg.imread('./images_hard/set'+ str(pic_set) + '_pic2.png')
 
@@ -163,9 +175,9 @@ print('Kuortosis of the original sources is: ', np.abs(k1) + np.abs(k2))
 # randomly generated mixing matrix
 
 #mixing_matrix = np.random.rand(2,2)
-# mixing_matrix = np.array([[0.36, 0.66], [0.03, 0.95]])
-mixing_matrix = np.array([[1, 0.9], [0.02, 1]])
-
+mixing_matrix = np.array([[0.8488177, 0.17889592], [0.05436321, 0.36153845]])
+# mixing_matrix = np.array([[1, 0.9], [0.02, 1]])
+# mixing_matrix = np.array([[1, 0.3], [0.5, 1]])
 # X = source * mixing_matrix - The mixed images
 
 X = np.matmul(mixing_matrix, source)
@@ -179,7 +191,7 @@ def Dic_proj_recto(data, n_coef, alpha):
     intercept = np.mean(data, axis=0)
     data -= intercept 
     
-    dico_recto.set_params(transform_algorithm = 'omp', transform_n_nonzero_coefs = n_coef)
+    dico_recto.set_params(transform_algorithm = 'omp', transform_n_nonzero_coefs = n_coef, transform_alpha = alpha)
     code = dico_recto.transform(data)
 
     patch = np.dot(code, V_recto)
@@ -203,7 +215,7 @@ def Dic_proj_verso(data, n_coef, alpha):
     intercept = np.mean(data, axis=0)
     data -= intercept 
 
-    dico_verso.set_params(transform_algorithm = 'omp', transform_n_nonzero_coefs = n_coef)
+    dico_verso.set_params(transform_algorithm = 'omp', transform_n_nonzero_coefs = n_coef, transform_alpha = alpha)
     code = dico_verso.transform(data)
 
     patch = np.dot(code, V_verso)
@@ -295,7 +307,7 @@ X = np.dot(W, X)
 # mix = [[0.6992, 0.7275], [0.4784, 0.5548]] #or use the matrix from the paper
 print('The mean value of the reference SDR is: ', np.mean(sdr_ref))
 
-max_it = 120
+max_it = 100
 #Se = np.random.randn(2, n*n) 
 Se = np.copy(X)  
 cost_it = np.zeros((1, max_it)) 
@@ -304,9 +316,11 @@ SIR_it = np.zeros((2, max_it))
 SAR_it = np.zeros((2, max_it)) 
 
 num_coeff_begin = 2
-num_coeff_final = 7
+num_coeff_final = 2
 num_coeff_v = np.floor(np.linspace(num_coeff_begin, num_coeff_final, max_it))
-sigma = 2e-3
+sigma = 5e-1
+sigma_final = 1e-6
+sigma_v = np.logspace(np.log10(sigma), np.log10(sigma_final), max_it)
 Se_old = np.copy(Se)
 for it in np.arange(max_it):
     # print(it)  
@@ -314,7 +328,7 @@ for it in np.arange(max_it):
     # Se = whiten_projection(soft_proximal(data_projection(X, Se),lambda_v[it]))
     # Se = whiten_projection(Dic_proj_single(data_projection(X,Se), num_coeff_v[it]))
     # 1. denoising
-    Se = Dic_proj_single(Se, num_coeff_v[it], sigma)
+    Se = Dic_proj_single(Se, num_coeff_v[it], sigma_v[it])
     # Se = TV_proj(Se, sigma)
     # 2. get demixing matrix
     WW = get_demix(X, Se)
@@ -334,7 +348,7 @@ for it in np.arange(max_it):
     #(sdr, sir, sar, perm) = mmetrics.bss_eval_sources(np.asarray(source), Se_inv)
     
     # SDR_it[:, it] = np.squeeze(sdr)
-Se = np.dot(WW, X)    
+# Se = np.dot(WW, X)    
 (sdr, sir, sar, perm) = mmetrics.bss_eval_sources(np.asarray(source), Se)
 
 Se = Dic_proj_single(Se, num_coeff_v[it], sigma)
