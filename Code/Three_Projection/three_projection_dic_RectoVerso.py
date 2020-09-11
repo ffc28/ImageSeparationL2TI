@@ -25,8 +25,8 @@ image_size = (n, n)
 patch_size = (m, m)
 step = 4
 
-pic_set = 1
-img_train1=mpimg.imread('./images/set'+ str(pic_set) + '_pic1.png')
+pic_set = 5
+img_train1=mpimg.imread('./images_hard/set'+ str(pic_set) + '_pic1.png')
 img_train_gray1 = rgb2gray(img_train1) # the value is between 0 and 1
 
 print('Learning the dictionary for recto and verso images...')
@@ -68,13 +68,14 @@ patches6 = patchify(img_train_gray6, patch_size, step)
 patches6 = patches6.reshape(-1, patch_size[0] * patch_size[1])
 
 ########
-#patches_recto = patches1
-patches_recto = np.concatenate((patches1, patches2, patches3, patches4, patches5, patches6), axis = 0)
+patches_recto = patches1
+# patches_recto = np.concatenate((patches1, patches2, patches3, patches4, patches5, patches6), axis = 0)
 patches_recto -= np.mean(patches_recto, axis=0) # remove the mean
 patches_recto /= np.std(patches_recto, axis=0) # normalise each patch
 
+print(patches_recto.shape)
 print('Learning the recto dictionary...')
-dico_recto = MiniBatchDictionaryLearning(n_components=100, alpha=1, n_iter=400) #TODO:check with different parameters
+dico_recto = MiniBatchDictionaryLearning(n_components=100, alpha=0.7, n_iter=400) #TODO:check with different parameters
 V_recto = dico_recto.fit(patches_recto).components_
 """
 # plot the dictionary
@@ -88,8 +89,8 @@ plt.suptitle('Recto dictionary learned from patches')
 plt.subplots_adjust(0.08, 0.02, 0.92, 0.85, 0.08, 0.23)
 """
 
-pic_set = 1
-img_train1=mpimg.imread('./images/set'+ str(pic_set) + '_pic1.png')
+pic_set = 5
+img_train1=mpimg.imread('./images_hard/set'+ str(pic_set) + '_pic2.png')
 img_train_gray1 = rgb2gray(img_train1) # the value is between 0 and 1
 # Flip to get the verso images
 img_train_gray1 = np.fliplr(img_train_gray1)
@@ -120,13 +121,13 @@ img_train_gray4 = np.fliplr(img_train_gray4)
 patches4 = patchify(img_train_gray4, patch_size, step)
 patches4 = patches4.reshape(-1, patch_size[0] * patch_size[1])
 
-#patches_verso = patches1
-patches_verso = np.concatenate((patches1, patches2, patches3, patches4), axis = 0)
+patches_verso = patches1
+# patches_verso = np.concatenate((patches1, patches2, patches3, patches4), axis = 0)
 patches_verso -= np.mean(patches_verso, axis=0) # remove the mean
 patches_verso /= np.std(patches_verso, axis=0) # normalise each patch
 
 print('Learning the verso dictionary...')
-dico_verso = MiniBatchDictionaryLearning(n_components=100, alpha=1, n_iter=400) #TODO:check with different parameters
+dico_verso = MiniBatchDictionaryLearning(n_components=100, alpha=0.7, n_iter=400) #TODO:check with different parameters
 V_verso = dico_verso.fit(patches_verso).components_
 """
 # plot the dictionary
@@ -141,7 +142,7 @@ plt.subplots_adjust(0.08, 0.02, 0.92, 0.85, 0.08, 0.23)
 """
 
 ## load the source here
-pic_set = 4
+pic_set = 5
 img1=mpimg.imread('./images_hard/set'+ str(pic_set) + '_pic1.png')
 img2=mpimg.imread('./images_hard/set'+ str(pic_set) + '_pic2.png')
 
@@ -175,7 +176,8 @@ print('Kuortosis of the original sources is: ', np.abs(k1) + np.abs(k2))
 # randomly generated mixing matrix
 
 #mixing_matrix = np.random.rand(2,2)
-mixing_matrix = np.array([[0.8488177, 0.17889592], [0.05436321, 0.36153845]])
+mixing_matrix = np.array([[1, 0.99], [0.002, 1]])
+#mixing_matrix = np.array([[0.8488177, 0.17889592], [0.05436321, 0.36153845]])
 # mixing_matrix = np.array([[1, 0.9], [0.02, 1]])
 # mixing_matrix = np.array([[1, 0.3], [0.5, 1]])
 # X = source * mixing_matrix - The mixed images
@@ -191,7 +193,7 @@ def Dic_proj_recto(data, n_coef, alpha):
     intercept = np.mean(data, axis=0)
     data -= intercept 
     
-    dico_recto.set_params(transform_algorithm = 'omp', transform_n_nonzero_coefs = n_coef, transform_alpha = alpha)
+    dico_recto.set_params(transform_algorithm = 'omp', transform_n_nonzero_coefs = n_coef)
     code = dico_recto.transform(data)
 
     patch = np.dot(code, V_recto)
@@ -215,7 +217,7 @@ def Dic_proj_verso(data, n_coef, alpha):
     intercept = np.mean(data, axis=0)
     data -= intercept 
 
-    dico_verso.set_params(transform_algorithm = 'omp', transform_n_nonzero_coefs = n_coef, transform_alpha = alpha)
+    dico_verso.set_params(transform_algorithm = 'omp', transform_n_nonzero_coefs = n_coef)
     code = dico_verso.transform(data)
 
     patch = np.dot(code, V_verso)
@@ -235,8 +237,25 @@ def Dic_proj_double(S, n_coeff, alpha):
     S1 = np.reshape(S[0,:], image_size)
     S2 = np.reshape(S[1,:], image_size)
     
+    S1 = S1.T
+    S2 = S2.T
+    """
+    plt.figure()
+    plt.subplot(121)
+    plt.imshow(S1, cmap='gray')
+    plt.title("Estimated Source Before")
+    plt.show
+    """
     S1 = Dic_proj_recto(S1, n_coeff, alpha)
     S2 = Dic_proj_verso(S2, n_coeff, alpha)
+    """
+    plt.subplot(122)
+    plt.imshow(S1, cmap='gray')
+    plt.title("Estimated Source after")
+    plt.show
+    """
+    S1 = S1.T
+    S2 = S2.T
     
     S[0,:] = np.reshape(S1, (1, n*n))
     S[1,:] = np.reshape(S2, (1, n*n))
@@ -248,8 +267,14 @@ def Dic_proj_single(S, n_coeff, alpha):
     S1 = np.reshape(S[0,:], image_size)
     S2 = np.reshape(S[1,:], image_size)
     
+    S1 = S1.T
+    S2 = S2.T
+    
     S1 = Dic_proj_recto(S1, n_coeff, alpha)
     S2 = Dic_proj_recto(S2, n_coeff, alpha)
+    
+    S1 = S1.T
+    S2 = S2.T
     
     S[0,:] = np.reshape(S1, (1, n*n))
     S[1,:] = np.reshape(S2, (1, n*n))
@@ -307,7 +332,7 @@ X = np.dot(W, X)
 # mix = [[0.6992, 0.7275], [0.4784, 0.5548]] #or use the matrix from the paper
 print('The mean value of the reference SDR is: ', np.mean(sdr_ref))
 
-max_it = 100
+max_it = 30
 #Se = np.random.randn(2, n*n) 
 Se = np.copy(X)  
 cost_it = np.zeros((1, max_it)) 
@@ -318,8 +343,8 @@ SAR_it = np.zeros((2, max_it))
 num_coeff_begin = 2
 num_coeff_final = 2
 num_coeff_v = np.floor(np.linspace(num_coeff_begin, num_coeff_final, max_it))
-sigma = 5e-1
-sigma_final = 1e-6
+sigma = 1e-2
+sigma_final = 1e-3
 sigma_v = np.logspace(np.log10(sigma), np.log10(sigma_final), max_it)
 Se_old = np.copy(Se)
 for it in np.arange(max_it):

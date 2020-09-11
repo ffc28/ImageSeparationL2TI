@@ -17,7 +17,7 @@ import utils
 from scipy.stats import kurtosis
 
 # control the random sequence
-np.random.seed(2)
+np.random.seed(1)
 
 N_sources = 5
 
@@ -32,7 +32,9 @@ for pic_set in np.arange(N_sources):
     # load images and convert them
     print(pic_set)
     #mixing_matrix = np.array([[0.36, 0.66], [0.03, 0.95]])
-    mixing_matrix = np.array([[1, 0.9], [0.02, 1]])
+    mixing_matrix = np.array([[1, 0.7], [0.02, 1]])
+    # mixing_matrix = np.array([[1, 0.3], [0.5, 1]])
+    # mixing_matrix = np.array([[0.8488177, 0.17889592], [0.05436321, 0.36153845]])
     X, source = three_projection_method.import_image(pic_set, mixing_matrix)
     # calculate kurtosis, if it's Gaussian distribution, then it's close to zero
     k1 = kurtosis(np.squeeze(source[0,:]))
@@ -44,15 +46,15 @@ for pic_set in np.arange(N_sources):
     X = three_projection_method.whiten_projection(np.asarray(X))
     
     (sdr_ref, sir_ref, sar, perm) = mmetrics.bss_eval_sources(np.asarray(source), np.asarray(X))
-    # print(sdr_ref)
+    print(sdr_ref)
     
     #####################################
     # Using the three projection method with different non linearity
     print('Here is the first algorithm')
     separation_method = 'wavelet'
-    sigma = 5e-3
+    sigma = 1e-3
     sigma_final = 1e-5
-    max_it = 300
+    max_it = 800
     separation_matrix = three_projection_method.three_projection_demix(X, max_it = max_it, method = separation_method, threshold_value = sigma, threshold_final = sigma_final)   
     # get the estimated sources with the separation matrix
     Se = np.dot(separation_matrix, X)   
@@ -75,9 +77,9 @@ for pic_set in np.arange(N_sources):
     # Using the three projection method with different non linearity
     print('Here is the third algorithm')
     separation_method = 'TV'
-    sigma = 2e-3
+    sigma = 1e-3
     sigma_final = 1e-5
-    max_it = 300
+    max_it = 800
     separation_matrix = three_projection_method.three_projection_demix(X, max_it = max_it, method = separation_method, threshold_value = sigma, threshold_final = sigma_final)   
     # get the estimated sources with the separation matrix
     # print(np.dot(separation_matrix, separation_matrix.T))
@@ -90,7 +92,7 @@ for pic_set in np.arange(N_sources):
 plt.figure()
 plt.plot(SDR_soft1_imp[0,: ], 'k*')   
 
-# plt.plot(Kur_it[0,:], SDR_ica_imp[0,: ], 'r*')    
+plt.plot(SDR_ica_imp[0,: ], 'r*')    
 
 plt.plot(SDR_soft2_imp[0,: ], 'b*')   
  
