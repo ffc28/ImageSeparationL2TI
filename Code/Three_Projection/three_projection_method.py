@@ -34,9 +34,36 @@ def whiten_projection(S):
     W = la.sqrtm(np.linalg.inv(R))
     return np.dot(W, S)
 
+def col_norm_proj(A):
+    """
+    Here we normalise each column of the input matrix A
+
+    """
+    A[:,0] = A[:,0]/np.linalg.norm(A[:,0])
+    A[:,1] = A[:,1]/np.linalg.norm(A[:,1])
+    
+    return A
+
+
 def get_demix(X, S):
     
     return np.dot(S, X.T)
+
+
+def get_demix_it(X, S):
+    """
+    I can use sub iteration here
+    """
+    W_init = np.dot(S, X.T)
+    W = np.dot(S, X.T)
+    max_it = 50
+    alpha = 0.5 # the learning rate
+    for it in np.arange(max_it):
+        # update W
+        W = whiten_projection((1-alpha)*W + alpha*W_init)
+    
+    #return np.dot(S, X.T)
+    return W
 
 
 def soft_proximal(S, value):
@@ -339,8 +366,12 @@ def three_projection_demix(X, max_it = 50, method = 'cube', threshold_value = 2e
             Se = soft_proximal(Se, thresh_v[it])
             # 2. demixing matrix
             W = get_demix(X, Se)
-            # 3. whiten the demixing matrix
-            W = whiten_projection(W)
+           # 3. whiten the demixing matrix
+            if it<350:
+                W = whiten_projection(W)
+            else:
+                W = col_norm_proj(W)
+                
             # 4. Get the new Se
             Se = np.dot(W, X)
             
@@ -361,7 +392,11 @@ def three_projection_demix(X, max_it = 50, method = 'cube', threshold_value = 2e
             # 2. demixing matrix
             W = get_demix(X, Se)
             # 3. whiten the demixing matrix
+            #if it<350:
             W = whiten_projection(W)
+            #else:
+            #W = col_norm_proj(W)
+                
             # 4. Get the new Se
             Se = np.dot(W, X)
             if np.linalg.norm(Se - Se_old, ord = 'fro') < stop_critera:

@@ -28,9 +28,9 @@ step = 4
 
 print('Learning the dictionary for recto images...')
 patches_recto = []
-for pic_set in np.arange(30): # I'm using all the images for the learning
+for pic_set in np.arange(4): # I'm using all the images for the learning
     
-    img_train = mpimg.imread('./train_images/set'+ str(pic_set + 1) + '_pic.png')
+    img_train = mpimg.imread('./train_building/set'+ str(pic_set + 1) + '_pic.png')
     img_train_gray = rgb2gray(img_train) # the value is between 0 and 1
 
 #    Extract reference patches from the image
@@ -64,11 +64,10 @@ plt.subplots_adjust(0.08, 0.02, 0.92, 0.85, 0.08, 0.23)
 
 print('Learning the dictionary for verso images...')
 patches_verso = []
-for pic_set in np.arange(30):
+for pic_set in np.arange(4):
     
-    img_train = mpimg.imread('./train_images/set'+ str(pic_set + 1) + '_pic.png')
+    img_train = mpimg.imread('./train_nature/set'+ str(pic_set + 1) + '_pic.png')
     img_train_gray = rgb2gray(img_train) # the value is between 0 and 1
-    img_train_gray = np.fliplr(img_train_gray) # We do the flip here
 #    Extract reference patches from the image
 
     patches = patchify(img_train_gray, patch_size, step)
@@ -197,27 +196,6 @@ def Dic_proj_single(S, n_coeff, alpha):
     S[1,:] = np.reshape(S2, (1, n*n))
      
     return S
-
-def Dic_proj_single_flip(S, n_coeff, alpha):
-    
-    S1 = np.reshape(S[0,:], image_size)
-    S2 = np.reshape(S[1,:], image_size)
-    
-    S1 = S1.T
-    S2 = S2.T
-    S2 = np.fliplr(S2)
-    
-    S1 = Dic_proj_recto(S1, n_coeff, alpha)
-    S2 = Dic_proj_recto(S2, n_coeff, alpha)
-    
-    S2 = np.fliplr(S2)
-    S1 = S1.T
-    S2 = S2.T
-    
-    S[0,:] = np.reshape(S1, (1, n*n))
-    S[1,:] = np.reshape(S2, (1, n*n))
-     
-    return S
     
 
 def data_projection(X,S):
@@ -267,14 +245,12 @@ def TV_proj(S, lambda_this):
     return S
 
 ## load the source here
-pic_set = 3
-img1=mpimg.imread('./images/set'+ str(pic_set) + '_pic1.png')
-img2=mpimg.imread('./images/set'+ str(pic_set) + '_pic2.png')
+pic_set = 5
+img1=mpimg.imread('./train_building/set'+ str(pic_set) + '_pic.png')
+img2=mpimg.imread('./train_nature/set'+ str(pic_set) + '_pic.png')
 
 img1_gray = rgb2gray(img1) # the value is between 0 and 1
 img2_gray = rgb2gray(img2)
-# Mixing process here
-img2_gray = np.fliplr(img2_gray)
 
 source1 = np.matrix(img1_gray)
 source1 = source1.flatten('F') #column wise
@@ -323,13 +299,13 @@ X = np.dot(W, X)
 print('The mean value of the reference SDR is: ', np.mean(sdr_ref))
 print('The permutation is: ', perm)
 
-max_it = 200
+max_it = 300
 #Se = np.random.randn(2, n*n) 
 Se = np.copy(X)  
 SDR_it =[]
 
 num_coeff_begin = 2
-num_coeff_final = 6
+num_coeff_final = 5
 num_coeff_v = np.floor(np.linspace(num_coeff_begin, num_coeff_final, max_it))
 sigma = 1e-3
 sigma_final = 1e-5
@@ -342,8 +318,8 @@ for it in np.arange(max_it):
     # Se = whiten_projection(Dic_proj_single(data_projection(X,Se), num_coeff_v[it]))
     # 1. denoising (single or double dictionary)
     # Se = Dic_proj_double(Se, num_coeff_v[it], sigma_v[it])
-    Se = Dic_proj_single_flip(Se, num_coeff_v[it], sigma_v[it])
-    # Se = TV_proj(Se, sigma)
+    #Se = Dic_proj_single(Se, num_coeff_v[it], sigma_v[it])
+    Se = TV_proj(Se, sigma)
     # 2. get demixing matrix
     WW = get_demix(X, Se)
     # 3. whiten the demix matrix

@@ -54,7 +54,7 @@ for pic_set in np.arange(N_sources):
     separation_method = 'wavelet'
     sigma = 1e-3
     sigma_final = 1e-5
-    max_it = 800
+    max_it = 1200
     separation_matrix = three_projection_method.three_projection_demix(X, max_it = max_it, method = separation_method, threshold_value = sigma, threshold_final = sigma_final)   
     # get the estimated sources with the separation matrix
     Se = np.dot(separation_matrix, X)   
@@ -79,7 +79,7 @@ for pic_set in np.arange(N_sources):
     separation_method = 'TV'
     sigma = 1e-3
     sigma_final = 1e-5
-    max_it = 800
+    max_it = 1200
     separation_matrix = three_projection_method.three_projection_demix(X, max_it = max_it, method = separation_method, threshold_value = sigma, threshold_final = sigma_final)   
     # get the estimated sources with the separation matrix
     # print(np.dot(separation_matrix, separation_matrix.T))
