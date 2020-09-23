@@ -267,9 +267,9 @@ def TV_proj(S, lambda_this):
     return S
 
 ## load the source here
-pic_set = 3
-img1=mpimg.imread('./images/set'+ str(pic_set) + '_pic1.png')
-img2=mpimg.imread('./images/set'+ str(pic_set) + '_pic2.png')
+pic_set = 1
+img1=mpimg.imread('./images_hard/set'+ str(pic_set) + '_pic1.png')
+img2=mpimg.imread('./images_hard/set'+ str(pic_set) + '_pic2.png')
 
 img1_gray = rgb2gray(img1) # the value is between 0 and 1
 img2_gray = rgb2gray(img2)
@@ -309,12 +309,29 @@ mixing_matrix = np.array([[1, 0.7], [0.02, 1]])
 # X = source * mixing_matrix - The mixed images
 
 X = np.dot(mixing_matrix, source)
+"""
+x1 = X[0,:]
+x1 = np.reshape(x1, (n,n))
+plt.figure()
+plt.imshow(x1.T, cmap='gray')
+plt.title("Mixture1 before whitening")
+plt.show
+"""
 # Here begins the algorithm
 # whitening processing. It's important
 R = np.dot(X, X.T)
 W = la.sqrtm(np.linalg.inv(R))
 X = np.dot(W, X)
 
+
+x1 = X[0,:]
+x1 = np.reshape(x1, (n,n))
+"""
+plt.figure()
+plt.imshow(x1.T, cmap='gray')
+plt.title("Mixture1 after whitening")
+plt.show
+"""
 # mixing_matrix_norm = np.dot(W, mixing_matrix)
 # mixing_matrix_norm[:,0] = mixing_matrix_norm[:,0]/np.linalg.norm(mixing_matrix_norm[:,0])
 # mixing_matrix_norm[:,1] = mixing_matrix_norm[:,1]/np.linalg.norm(mixing_matrix_norm[:,1])
@@ -323,13 +340,13 @@ X = np.dot(W, X)
 print('The mean value of the reference SDR is: ', np.mean(sdr_ref))
 print('The permutation is: ', perm)
 
-max_it = 200
+max_it = 100
 #Se = np.random.randn(2, n*n) 
 Se = np.copy(X)  
 SDR_it =[]
 
 num_coeff_begin = 2
-num_coeff_final = 6
+num_coeff_final = 2
 num_coeff_v = np.floor(np.linspace(num_coeff_begin, num_coeff_final, max_it))
 sigma = 1e-3
 sigma_final = 1e-5
@@ -341,8 +358,8 @@ for it in np.arange(max_it):
     # Se = whiten_projection(soft_proximal(data_projection(X, Se),lambda_v[it]))
     # Se = whiten_projection(Dic_proj_single(data_projection(X,Se), num_coeff_v[it]))
     # 1. denoising (single or double dictionary)
-    # Se = Dic_proj_double(Se, num_coeff_v[it], sigma_v[it])
-    Se = Dic_proj_single_flip(Se, num_coeff_v[it], sigma_v[it])
+    Se = Dic_proj_double(Se, num_coeff_v[it], sigma_v[it])
+    # Se = Dic_proj_single_flip(Se, num_coeff_v[it], sigma_v[it])
     # Se = TV_proj(Se, sigma)
     # 2. get demixing matrix
     WW = get_demix(X, Se)
@@ -353,13 +370,13 @@ for it in np.arange(max_it):
     Se = np.dot(WW, X)
     
     # cost_it[0,it] = np.linalg.norm(X - np.dot(np.dot(X, Se.T), Se), ord = 'fro')
-    if np.linalg.norm(Se - Se_old, ord = 'fro') < 1e-6:
+    if np.linalg.norm(Se - Se_old, ord = 'fro') < 1e-8:
         print('Dict demix convergence reached')
         print('The real number of iteration is', it)
         break
     
     Se_old = np.copy(Se) 
-    if math.floor(it/10)*10 == it:
+    if math.floor(it/1)*1 == it:
         (sdr, sir, sar, perm) = mmetrics.bss_eval_sources(np.asarray(source), Se)
         SDR_it.append(np.mean(sdr))
     # 
@@ -385,7 +402,7 @@ plt.plot(np.mean(SDR_it, axis = 0))
 plt.title('SDR for iterations Dictionary learning')
 plt.grid()
 plt.show
-
+"""
 s1 = Se[0,:]
 s1 = np.reshape(s1, (n,n))
 
@@ -402,10 +419,10 @@ plt.imshow(s2.T, cmap='gray')
 plt.title("Estimated source 2 with Sparse")
 plt.show()
 
-"""
+
 plt.figure()
 plt.plot(SDR_it)
-plt.title('SDR for iterations, TV denoising')
+plt.title('SDR for iterations, dictionary denoising')
 plt.xlabel('iterations')
 plt.ylabel('SDR')
 plt.grid()
