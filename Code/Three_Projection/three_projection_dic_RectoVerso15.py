@@ -25,6 +25,7 @@ m = 8 # Check other sizes
 image_size = (n, n)
 patch_size = (m, m)
 step = 4
+dict_components = 100
 
 print('Learning the dictionary for recto images...')
 patches_recto = []
@@ -48,7 +49,7 @@ patches_recto = patches_recto.reshape(-1, m*m)
 patches_recto -= np.mean(patches_recto, axis=0) # remove the mean
 patches_recto /= np.std(patches_recto, axis=0) # normalise each patch
 
-dico_recto = MiniBatchDictionaryLearning(n_components = 100, alpha = 0.7, n_iter = 400) #TODO:check with different parameters
+dico_recto = MiniBatchDictionaryLearning(n_components = dict_components, alpha = 0.7, n_iter = 400) #TODO:check with different parameters
 V_recto = dico_recto.fit(patches_recto).components_
 """
 # plot the dictionary
@@ -84,7 +85,7 @@ patches_verso = patches_verso.reshape(-1, m*m)
 patches_verso -= np.mean(patches_verso, axis=0) # remove the mean
 patches_verso /= np.std(patches_verso, axis=0) # normalise each patch
 
-dico_verso = MiniBatchDictionaryLearning(n_components = 100, alpha = 0.7, n_iter = 400) #TODO:check with different parameters
+dico_verso = MiniBatchDictionaryLearning(n_components = dict_components, alpha = 0.7, n_iter = 400) #TODO:check with different parameters
 V_verso = dico_verso.fit(patches_verso).components_
 """
 # plot the dictionary
@@ -149,6 +150,7 @@ def Dic_proj_verso(data, n_coef, alpha):
 
     return im_re
 
+
 def Dic_proj_double(S, n_coeff, alpha):
     
     S1 = np.reshape(S[0,:], image_size)
@@ -178,6 +180,7 @@ def Dic_proj_double(S, n_coeff, alpha):
     S[1,:] = np.reshape(S2, (1, n*n))
      
     return S
+
 
 def Dic_proj_single(S, n_coeff, alpha):
     
@@ -266,6 +269,17 @@ def TV_proj(S, lambda_this):
      
     return S
 
+def dist_diag(A):
+    """
+    This function calculates the distance of a matrix from a diagnal matrix
+    """
+    A = col_norm_proj(A)
+    ratio =(np.abs(A[0, 1]) + np.abs(A[1, 0]))/(np.abs(A[0,0]) + np.abs(A[1,1]))
+    if np.abs(A[0, 0]) < np.abs(A[0, 1]):
+        ratio = 1/ratio
+    
+    return ratio
+
 ## load the source here
 pic_set = 1
 img1=mpimg.imread('./images_hard/set'+ str(pic_set) + '_pic1.png')
@@ -285,8 +299,9 @@ source2 = source2.flatten('F') #column wise
 source1 = source1 - np.mean(source1)
 source2 = source2 - np.mean(source2)
 
-#source1 = source1/np.linalg.norm(source1)
-#source2 = source2/np.linalg.norm(source2)
+# I think I can do this
+source1 = source1/np.linalg.norm(source1)
+source2 = source2/np.linalg.norm(source2)
 
 # print("rdc = ", rdc(source1.T,source2.T))
 source = np.stack((source1, source2))
@@ -303,7 +318,10 @@ print('Kuortosis of the original sources is: ', np.abs(k1) + np.abs(k2))
 
 #mixing_matrix = np.random.rand(2,2)
 mixing_matrix = np.array([[1, 0.7], [0.02, 1]])
-#mixing_matrix = np.array([[0.8488177, 0.17889592], [0.05436321, 0.36153845]])
+mixing_matrix = whiten_projection(mixing_matrix)
+print("The unitary mixing matrix is: ")
+print(mixing_matrix)
+# mixing_matrix = np.array([[0.8488177, 0.17889592], [0.05436321, 0.36153845]])
 # mixing_matrix = np.array([[1, 0.9], [0.02, 1]])
 # mixing_matrix = np.array([[1, 0.3], [0.5, 1]])
 # X = source * mixing_matrix - The mixed images
@@ -323,7 +341,8 @@ R = np.dot(X, X.T)
 W = la.sqrtm(np.linalg.inv(R))
 X = np.dot(W, X)
 
-
+mixing_new = np.dot(W, mixing_matrix)
+print(mixing_new)
 x1 = X[0,:]
 x1 = np.reshape(x1, (n,n))
 """
@@ -343,13 +362,14 @@ print('The permutation is: ', perm)
 max_it = 100
 #Se = np.random.randn(2, n*n) 
 Se = np.copy(X)  
-SDR_it =[]
+SDR_it = np.zeros((2, max_it))
+dist_it = np.zeros((2, max_it))
 
 num_coeff_begin = 2
 num_coeff_final = 2
 num_coeff_v = np.floor(np.linspace(num_coeff_begin, num_coeff_final, max_it))
 sigma = 1e-3
-sigma_final = 1e-5
+sigma_final = 1e-3
 sigma_v = np.logspace(np.log10(sigma), np.log10(sigma_final), max_it)
 Se_old = np.copy(Se)
 for it in np.arange(max_it):
@@ -358,9 +378,10 @@ for it in np.arange(max_it):
     # Se = whiten_projection(soft_proximal(data_projection(X, Se),lambda_v[it]))
     # Se = whiten_projection(Dic_proj_single(data_projection(X,Se), num_coeff_v[it]))
     # 1. denoising (single or double dictionary)
-    Se = Dic_proj_double(Se, num_coeff_v[it], sigma_v[it])
-    # Se = Dic_proj_single_flip(Se, num_coeff_v[it], sigma_v[it])
-    # Se = TV_proj(Se, sigma)
+    # Se = Dic_proj_double(Se, num_coeff_v[it], sigma_v[it])
+    #Se = Dic_proj_single(Se, num_coeff_v[it], sigma_v[it])
+    #Se = Dic_proj_single_flip(Se, num_coeff_v[it], sigma_v[it])
+    Se = TV_proj(Se, sigma)
     # 2. get demixing matrix
     WW = get_demix(X, Se)
     # 3. whiten the demix matrix
@@ -376,12 +397,21 @@ for it in np.arange(max_it):
         break
     
     Se_old = np.copy(Se) 
+    # matrix evaluation
+    estimated_mix = np.dot(WW, mixing_new)
+    dist_it[0, it] = dist_diag(estimated_mix)
+    
     if math.floor(it/1)*1 == it:
         (sdr, sir, sar, perm) = mmetrics.bss_eval_sources(np.asarray(source), Se)
-        SDR_it.append(np.mean(sdr))
+        # print(sdr)
+        SDR_it[0, it] = sdr[0]
+        SDR_it[1, it] = sdr[1]
+    
     # 
     #(sdr, sir, sar, perm) = mmetrics.bss_eval_sources(np.asarray(source), Se_inv)
-    
+
+  
+
     # SDR_it[:, it] = np.squeeze(sdr)
 # Se = np.dot(WW, X)    
 (sdr, sir, sar, perm) = mmetrics.bss_eval_sources(np.asarray(source), Se)
@@ -402,7 +432,7 @@ plt.plot(np.mean(SDR_it, axis = 0))
 plt.title('SDR for iterations Dictionary learning')
 plt.grid()
 plt.show
-"""
+
 s1 = Se[0,:]
 s1 = np.reshape(s1, (n,n))
 
@@ -420,11 +450,31 @@ plt.title("Estimated source 2 with Sparse")
 plt.show()
 
 
+"""
 plt.figure()
-plt.plot(SDR_it)
-plt.title('SDR for iterations, dictionary denoising')
-plt.xlabel('iterations')
-plt.ylabel('SDR')
+plt.subplot(211)
+plt.plot(np.mean(SDR_it, axis = 0))
+plt.title('Average SDR for iterations')
+#plt.xlabel('iterations')
+plt.ylabel('SDR (dB)')
 plt.grid()
-plt.show()
 
+plt.subplot(212)
+plt.plot(dist_it[0,:])
+plt.title('Average matrix measure for iterations')
+plt.xlabel('iterations')
+plt.grid()
+plt.show
+
+plt.figure()
+plt.subplot(211)
+plt.plot(SDR_it[0,:])
+plt.title('SDR1')
+plt.ylabel('SDR (dB)')
+plt.grid()
+
+plt.subplot(212)
+plt.plot(SDR_it[1,:])
+plt.title('SDR2')
+plt.ylabel('SDR (dB)')
+plt.grid()
