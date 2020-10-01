@@ -100,6 +100,29 @@ def TV_proj(S, image_size, lambda_this):
      
     return S
 
+def TV_proj_flip(S, image_size, lambda_this):
+    """
+    This function does the TV projection
+    """
+    S1 = np.reshape(S[0,:], image_size)
+    S2 = np.reshape(S[1,:], image_size)
+    # TV denoising
+    S1 = S1.T
+    S2 = S2.T
+    S2 = np.fliplr(S2)
+    
+    S1 = denoise_tv_chambolle(S1, weight = lambda_this, multichannel=False)
+    S2 = denoise_tv_chambolle(S2, weight = lambda_this, multichannel=False)
+    
+    S2 = np.fliplr(S2)
+    S1 = S1.T
+    S2 = S2.T
+        
+    S[0,:] = np.reshape(S1, (1, image_size[0]*image_size[1]))
+    S[1,:] = np.reshape(S2, (1, image_size[0]*image_size[1]))
+     
+    return S
+
 def Wavelet_proj(S, image_size, lambda_this):
     """
     This function does the Wavelet projection
@@ -405,6 +428,50 @@ def three_projection_demix(X, max_it = 50, method = 'cube', threshold_value = 2e
                 break
             Se_old = np.copy(Se)  
             
+            
+    if method == 'TV_flip':
+        # TV non-linearity
+        
+        for it in np.arange(max_it):
+            # 1. denoising
+            Se = TV_proj_flip(Se, image_size, thresh_v[it])
+            # 2. demixing matrix
+            W = get_demix(X, Se)
+            # 3. whiten the demixing matrix
+            #if it<350:
+            W = whiten_projection(W)
+            #else:
+            #W = col_norm_proj(W)
+                
+            # 4. Get the new Se
+            Se = np.dot(W, X)
+            if np.linalg.norm(Se - Se_old, ord = 'fro') < stop_critera:
+                print('TV demix convergence reached')
+                print('The real number of iteration is', it)
+                break
+            Se_old = np.copy(Se)          
+            
+    if method == 'TV_norm':
+        # TV non-linearity
+        
+        for it in np.arange(max_it):
+            # 1. denoising
+            Se = TV_proj(Se, image_size, thresh_v[it])
+            # 2. demixing matrix
+            W = get_demix(X, Se)
+            # 3. Normalise the demixing matrix
+            W = np.linalg.inv(W)
+            W = col_norm_proj(W)    
+            W = np.linalg.inv(W)
+            # print(W)
+            # 4. Get the new Se
+            Se = np.dot(W, X)
+            if np.linalg.norm(Se - Se_old, ord = 'fro') < stop_critera:
+                print('TV norm demix convergence reached')
+                print('The real number of iteration is', it)
+                break
+            Se_old = np.copy(Se)          
+            
     if method == 'wavelet':
         # Wavelet non-linearity
         
@@ -490,8 +557,8 @@ def import_image(pic_set, mix_matrix):
     source1 = source1 - np.mean(source1)
     source2 = source2 - np.mean(source2)
     
-    # source1 = source1/np.linalg.norm(source1)
-    # source2 = source2/np.linalg.norm(source2)
+    source1 = source1/np.linalg.norm(source1)
+    source2 = source2/np.linalg.norm(source2)
 
     source = np.stack((source1, source2))
     X = np.matmul(mix_matrix, source)

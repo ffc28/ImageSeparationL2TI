@@ -15,15 +15,27 @@ import three_projection_method
 from sklearn.decomposition import FastICA
 import utils
 from scipy.stats import kurtosis
-
+from rdc import rdc
+import scipy.linalg as la
 # control the random sequence
 np.random.seed(1)
+
+def whiten_projection(S):
+    """
+    This function does the whitening projection with PCA
+    """
+    R = np.dot(S, S.T)
+    W = la.sqrtm(np.linalg.inv(R))
+    return np.dot(W, S), W
 
 N_sources = 5
 
 Kur_it = np.zeros((1, N_sources))
+rdc_it = np.zeros((1, N_sources))
 SDR_soft1_imp = np.zeros((1, N_sources))
 SDR_soft2_imp = np.zeros((1, N_sources))
+SDR_soft3_imp = np.zeros((1, N_sources))
+
 SDR_cube_imp = np.zeros((1, N_sources))
 SDR_ica_imp = np.zeros((1, N_sources))
 SDR_sp_imp = np.zeros((1, N_sources))
@@ -40,21 +52,23 @@ for pic_set in np.arange(N_sources):
     k1 = kurtosis(np.squeeze(source[0,:]))
     k2 = kurtosis(np.squeeze(source[1,:]))
     Kur_it[0, pic_set] = np.abs(k1) + np.abs(k2)
+    rdc_it[0, pic_set] = rdc(source[0,:], source[1,:])
     
     # whitening processing. It's important
     X_nonwhiten = np.copy(X)
-    X = three_projection_method.whiten_projection(np.asarray(X))
+    X, W = whiten_projection(np.asarray(X))
     
     (sdr_ref, sir_ref, sar, perm) = mmetrics.bss_eval_sources(np.asarray(source), np.asarray(X))
     print(sdr_ref)
     
+    new_mix = np.dot(W, mixing_matrix)
     #####################################
     # Using the three projection method with different non linearity
     print('Here is the first algorithm')
-    separation_method = 'wavelet'
+    separation_method = 'TV'
     sigma = 1e-3
     sigma_final = 1e-5
-    max_it = 1200
+    max_it = 800
     separation_matrix = three_projection_method.three_projection_demix(X, max_it = max_it, method = separation_method, threshold_value = sigma, threshold_final = sigma_final)   
     # get the estimated sources with the separation matrix
     Se = np.dot(separation_matrix, X)   
@@ -76,10 +90,10 @@ for pic_set in np.arange(N_sources):
     #####################################
     # Using the three projection method with different non linearity
     print('Here is the third algorithm')
-    separation_method = 'TV'
+    separation_method = 'TV_norm'
     sigma = 1e-3
     sigma_final = 1e-5
-    max_it = 1200
+    max_it = 800
     separation_matrix = three_projection_method.three_projection_demix(X, max_it = max_it, method = separation_method, threshold_value = sigma, threshold_final = sigma_final)   
     # get the estimated sources with the separation matrix
     # print(np.dot(separation_matrix, separation_matrix.T))
@@ -103,3 +117,6 @@ print(np.mean(SDR_soft1_imp[0,: ]))
 print(np.mean(SDR_soft2_imp[0,: ]))
 print(np.mean(SDR_ica_imp[0,: ]))
 """
+
+plt.figure()
+plt.plot(rdc_it[0,:], SDR_soft2_imp[0,:], 'b*')

@@ -66,7 +66,7 @@ print('Learning the dictionary for verso images...')
 patches_verso = []
 for pic_set in np.arange(4):
     
-    img_train = mpimg.imread('./train_nature/set'+ str(pic_set + 1) + '_pic.png')
+    img_train = mpimg.imread('./train_cat/set'+ str(pic_set + 1) + '_pic.png')
     img_train_gray = rgb2gray(img_train) # the value is between 0 and 1
 #    Extract reference patches from the image
 
@@ -116,9 +116,6 @@ def Dic_proj_recto(data, n_coef, alpha):
     patch += intercept
 
     patch = np.reshape(patch, initial_patch_size)
-    # if we use threshold then we have this
-    # patch -= patch.min()
-    # patch /= patch.max()
 
     im_re = unpatchify(np.asarray(patch), image_size)
 
@@ -140,9 +137,6 @@ def Dic_proj_verso(data, n_coef, alpha):
     patch += intercept
     
     patch = np.reshape(patch, initial_patch_size)
-    # if we use threshold then we have this
-    # patch -= patch.min()
-    # patch /= patch.max()
 
     im_re = unpatchify(np.asarray(patch), image_size)
 
@@ -155,24 +149,13 @@ def Dic_proj_double(S, n_coeff, alpha):
     
     S1 = S1.T
     S2 = S2.T
-    """
-    plt.figure()
-    plt.subplot(121)
-    plt.imshow(S1, cmap='gray')
-    plt.title("Estimated Source Before")
-    plt.show
-    """
+    
     S1 = Dic_proj_recto(S1, n_coeff, alpha)
     S2 = Dic_proj_verso(S2, n_coeff, alpha)
     
     S1 = S1.T
     S2 = S2.T
-    """
-    plt.subplot(122)
-    plt.imshow(S1, cmap='gray')
-    plt.title("Estimated Source after")
-    plt.show
-    """
+    
     S[0,:] = np.reshape(S1, (1, n*n))
     S[1,:] = np.reshape(S2, (1, n*n))
      
@@ -244,10 +227,58 @@ def TV_proj(S, lambda_this):
      
     return S
 
+def Wavelet_proj(S, lambda_this):
+    """
+    This function does the Wavelet projection
+    """
+    S1 = np.reshape(S[0,:], image_size)
+    S2 = np.reshape(S[1,:], image_size)
+    # Wavelet denoising
+    S1 = denoise_wavelet(S1, sigma = lambda_this, multichannel=False, convert2ycbcr=False,
+                           method='BayesShrink', mode='soft',
+                           rescale_sigma=True)
+    S2 = denoise_wavelet(S2, sigma = lambda_this, multichannel=False, convert2ycbcr=False,
+                           method='BayesShrink', mode='soft',
+                           rescale_sigma=False)
+        
+    S[0,:] = np.reshape(S1, (1, image_size[0]*image_size[1]))
+    S[1,:] = np.reshape(S2, (1, image_size[0]*image_size[1]))
+     
+    return S
+
+def dist_diag(A):
+    """
+    This function calculates the distance of a matrix from a diagnal matrix
+    """
+    A = col_norm_proj(A)
+    ratio =(np.abs(A[0, 1]) + np.abs(A[1, 0]))/(np.abs(A[0,0]) + np.abs(A[1,1]))
+    if np.abs(A[0, 0]) < np.abs(A[0, 1]):
+        ratio = 1/ratio
+    
+    return ratio
+
+def show_image(S):
+    S1 = np.reshape(S[0,:], image_size)
+    S2 = np.reshape(S[1,:], image_size)
+    
+    S1 = S1.T
+    S2 = S2.T
+    
+    plt.figure()
+    plt.subplot(121)
+    plt.imshow(S1, cmap='gray')
+    plt.title("Source 1")
+    plt.show
+    
+    plt.subplot(122)
+    plt.imshow(S2, cmap='gray')
+    plt.title("Source 2")
+    plt.show
+
 ## load the source here
 pic_set = 5
 img1=mpimg.imread('./train_building/set'+ str(pic_set) + '_pic.png')
-img2=mpimg.imread('./train_nature/set'+ str(pic_set) + '_pic.png')
+img2=mpimg.imread('./train_cat/set'+ str(pic_set) + '_pic.png')
 
 img1_gray = rgb2gray(img1) # the value is between 0 and 1
 img2_gray = rgb2gray(img2)
@@ -261,8 +292,8 @@ source2 = source2.flatten('F') #column wise
 source1 = source1 - np.mean(source1)
 source2 = source2 - np.mean(source2)
 
-#source1 = source1/np.linalg.norm(source1)
-#source2 = source2/np.linalg.norm(source2)
+source1 = source1/np.linalg.norm(source1)
+source2 = source2/np.linalg.norm(source2)
 
 # print("rdc = ", rdc(source1.T,source2.T))
 source = np.stack((source1, source2))
@@ -278,7 +309,8 @@ print('Kuortosis of the original sources is: ', np.abs(k1) + np.abs(k2))
 # print(np.matmul(source,source.T))
 
 #mixing_matrix = np.random.rand(2,2)
-mixing_matrix = np.array([[1, 0.7], [0.02, 1]])
+#mixing_matrix = np.array([[1, 0.7], [0.02, 1]])
+mixing_matrix = np.array([[0.7, 0.6], [0.68, -0.57]])
 #mixing_matrix = np.array([[0.8488177, 0.17889592], [0.05436321, 0.36153845]])
 # mixing_matrix = np.array([[1, 0.9], [0.02, 1]])
 # mixing_matrix = np.array([[1, 0.3], [0.5, 1]])
@@ -291,6 +323,7 @@ R = np.dot(X, X.T)
 W = la.sqrtm(np.linalg.inv(R))
 X = np.dot(W, X)
 
+mixing_new = np.dot(W, mixing_matrix)
 # mixing_matrix_norm = np.dot(W, mixing_matrix)
 # mixing_matrix_norm[:,0] = mixing_matrix_norm[:,0]/np.linalg.norm(mixing_matrix_norm[:,0])
 # mixing_matrix_norm[:,1] = mixing_matrix_norm[:,1]/np.linalg.norm(mixing_matrix_norm[:,1])
@@ -299,16 +332,17 @@ X = np.dot(W, X)
 print('The mean value of the reference SDR is: ', np.mean(sdr_ref))
 print('The permutation is: ', perm)
 
-max_it = 300
+max_it = 100
 #Se = np.random.randn(2, n*n) 
 Se = np.copy(X)  
 SDR_it =[]
+dist_it = np.zeros((1, max_it))
 
-num_coeff_begin = 2
-num_coeff_final = 5
+num_coeff_begin = 1
+num_coeff_final = 2
 num_coeff_v = np.floor(np.linspace(num_coeff_begin, num_coeff_final, max_it))
-sigma = 1e-3
-sigma_final = 1e-5
+sigma = 1e-2
+sigma_final = 1e-3
 sigma_v = np.logspace(np.log10(sigma), np.log10(sigma_final), max_it)
 Se_old = np.copy(Se)
 for it in np.arange(max_it):
@@ -317,9 +351,10 @@ for it in np.arange(max_it):
     # Se = whiten_projection(soft_proximal(data_projection(X, Se),lambda_v[it]))
     # Se = whiten_projection(Dic_proj_single(data_projection(X,Se), num_coeff_v[it]))
     # 1. denoising (single or double dictionary)
-    # Se = Dic_proj_double(Se, num_coeff_v[it], sigma_v[it])
+    #Se = Dic_proj_double(Se, num_coeff_v[it], sigma_v[it])
     #Se = Dic_proj_single(Se, num_coeff_v[it], sigma_v[it])
-    Se = TV_proj(Se, sigma)
+    Se = TV_proj(Se, sigma_v[it])
+    #Se = Wavelet_proj(Se, sigma_v[it])
     # 2. get demixing matrix
     WW = get_demix(X, Se)
     # 3. whiten the demix matrix
@@ -335,19 +370,24 @@ for it in np.arange(max_it):
         break
     
     Se_old = np.copy(Se) 
+    
     if math.floor(it/10)*10 == it:
-        (sdr, sir, sar, perm) = mmetrics.bss_eval_sources(np.asarray(source), Se)
-        SDR_it.append(np.mean(sdr))
-    # 
+        #(sdr, sir, sar, perm) = mmetrics.bss_eval_sources(np.asarray(source), Se)
+        #SDR_it.append(np.mean(sdr))
+        show_image(Se)
+    # matrix evaluation
+    estimated_mix = np.dot(WW, mixing_new)
+    dist_it[0, it] = dist_diag(estimated_mix)
     #(sdr, sir, sar, perm) = mmetrics.bss_eval_sources(np.asarray(source), Se_inv)
     
     # SDR_it[:, it] = np.squeeze(sdr)
 # Se = np.dot(WW, X)    
 (sdr, sir, sar, perm) = mmetrics.bss_eval_sources(np.asarray(source), Se)
 
-Se = Dic_proj_single(Se, num_coeff_v[it], sigma)
+# Se = Dic_proj_single(Se, num_coeff_v[it], sigma)
 print('The mean value of the SDR is: ', np.mean(sdr))
 print('The SDR improvement is: ', np.mean(sdr) - np.mean(sdr_ref))
+print('The final distance to a diagonal matrix is: ', dist_diag(estimated_mix))
 """
 plt.figure()
 plt.subplot(211)
@@ -380,10 +420,9 @@ plt.show()
 
 """
 plt.figure()
-plt.plot(SDR_it)
-plt.title('SDR for iterations, TV denoising')
+plt.plot(dist_it[0,:])
+plt.title('Average matrix measure for iterations')
 plt.xlabel('iterations')
-plt.ylabel('SDR')
 plt.grid()
-plt.show()
+plt.show
 
