@@ -1,0 +1,90 @@
+\begin{thebibliography}{10}
+
+\bibitem{comon2010handbook}
+Pierre Comon and Christian Jutten,
+\newblock {\em Handbook of Blind Source Separation: Independent component
+  analysis and applications},
+\newblock Academic press, 2010.
+
+\bibitem{hyvarinen2004independent}
+Aapo Hyv{\"a}rinen, Juha Karhunen, and Erkki Oja,
+\newblock {\em Independent component analysis}, vol.~46,
+\newblock John Wiley \& Sons, 2004.
+
+\bibitem{souidene2007blind}
+Wided Souid{\`e}ne, Abdeldjalil A{\"\i}ssa-El-Bey, Karim Abed-Meraim, and
+  Azeddine Beghdadi,
+\newblock ``Blind image separation using sparse representation,''
+\newblock in {\em 2007 IEEE International Conference on Image Processing}.
+  IEEE, 2007, vol.~3, pp. III--125.
+
+\bibitem{zibulevsky2001blind}
+Michael Zibulevsky and Barak~A Pearlmutter,
+\newblock ``Blind source separation by sparse decomposition in a signal
+  dictionary,''
+\newblock {\em Neural computation}, vol. 13, no. 4, pp. 863--882, 2001.
+
+\bibitem{bobin2007sparsity}
+J{\'e}r{\^o}me Bobin, J-L Starck, Jalal Fadili, and Yassir Moudden,
+\newblock ``Sparsity and morphological diversity in blind source separation,''
+\newblock {\em Image Processing, IEEE Transactions on}, vol. 16, no. 11, pp.
+  2662--2674, 2007.
+
+\bibitem{feng2018revisiting}
+Fangchen Feng and Matthieu Kowalski,
+\newblock ``Revisiting sparse {ICA} from a synthesis point of view: Blind
+  source separation for over and underdetermined mixtures,''
+\newblock {\em Signal Processing}, vol. 152, pp. 165--177, 2018.
+
+\bibitem{merrikh2010using}
+Farnood Merrikh-Bayat, Massoud Babaie-Zadeh, and Christian Jutten,
+\newblock ``Using non-negative matrix factorization for removing
+  show-through,''
+\newblock in {\em International Conference on Latent Variable Analysis and
+  Signal Separation}. Springer, 2010, pp. 482--489.
+
+\bibitem{boccuto2019blind}
+Antonio Boccuto, Ivan Gerace, and Valentina Giorgetti,
+\newblock ``A blind source separation technique for document restoration,''
+\newblock {\em SIAM Journal on Imaging Sciences}, vol. 12, no. 2, pp.
+  1135--1162, 2019.
+
+\bibitem{tseng2001convergence}
+Paul Tseng,
+\newblock ``Convergence of a block coordinate descent method for
+  nondifferentiable minimization,''
+\newblock {\em Journal of optimization theory and applications}, vol. 109, no.
+  3, pp. 475--494, 2001.
+
+\bibitem{donoho1994ideal}
+David~L Donoho and Jain~M Johnstone,
+\newblock ``Ideal spatial adaptation by wavelet shrinkage,''
+\newblock {\em biometrika}, vol. 81, no. 3, pp. 425--455, 1994.
+
+\bibitem{chang2000adaptive}
+S~Grace Chang, Bin Yu, and Martin Vetterli,
+\newblock ``Adaptive wavelet thresholding for image denoising and
+  compression,''
+\newblock {\em IEEE transactions on image processing}, vol. 9, no. 9, pp.
+  1532--1546, 2000.
+
+\bibitem{chambolle2004algorithm}
+Antonin Chambolle,
+\newblock ``An algorithm for total variation minimization and applications,''
+\newblock {\em Journal of Mathematical imaging and vision}, vol. 20, no. 1-2,
+  pp. 89--97, 2004.
+
+\bibitem{dabov2007image}
+Kostadin Dabov, Alessandro Foi, Vladimir Katkovnik, and Karen Egiazarian,
+\newblock ``Image denoising by sparse 3-d transform-domain collaborative
+  filtering,''
+\newblock {\em IEEE Transactions on image processing}, vol. 16, no. 8, pp.
+  2080--2095, 2007.
+
+\bibitem{buades2005non}
+Antoni Buades, Bartomeu Coll, and J-M Morel,
+\newblock ``A non-local algorithm for image denoising,''
+\newblock in {\em 2005 IEEE Computer Society Conference on Computer Vision and
+  Pattern Recognition (CVPR'05)}. IEEE, 2005, vol.~2, pp. 60--65.
+
+\end{thebibliography}

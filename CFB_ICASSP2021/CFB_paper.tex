@@ -1,0 +1,133 @@
+\documentclass[conference]{IEEEtran}
+\hyphenation{op-tical net-works semi-conduc-tor}
+
+\usepackage{epsfig,color}
+%\def\Mcol{\sl\color{red}}
+%\usepackage[french]{babel}
+\usepackage{amssymb,amsfonts,amsmath,stmaryrd,amsthm}
+\usepackage{url}
+\usepackage{epstopdf}
+\usepackage[noadjust]{cite}
+\usepackage{array} 
+\usepackage{tabularx}
+\usepackage[ruled,vlined]{algorithm2e}
+%\usepackage{amsmath}
+\usepackage{dsfont}
+%\usepackage{lipsum}
+\usepackage{verbatim}
+%\usepackage{algorithm}
+\usepackage{gensymb}
+
+\input{mydefs}
+\def\syn#1{{\tilde{#1}}}
+
+\def\mk{\color{red}}
+\def\ffc{\color{blue}}
+
+\newcommand{\argmin}{\mathop{\mathrm{argmin}}}
+\newcommand{\diag}[1]{\mbox{diag}\left(#1\right)}
+\newcommand{\prox}{\mathrm{prox}}
+\newcommand{\eqdef}{\stackrel{\mathrm{def}}{=}}
+
+\theoremstyle{plain}
+\newtheorem{thm}{Theorem}
+\newtheorem{lem}[thm]{Lemma}
+\newtheorem{Prop}[thm]{Proposition}
+\newtheorem*{cor}{Corollary}
+\newtheorem{mydef}{Definition}
+
+
+\begin{document}
+
+
+\title{Plug-and-play approach for blind image separation with application to document image restoration}
+
+\author{\IEEEauthorblockN{Xhenis Coba, Fangchen Feng, Azeddine Begdadi}
+	\IEEEauthorblockA{\textit{Laboratoire de Traitement et Transport de l'Information (L2TI)} \\
+		\textit{Université Sorbonne Paris Nord}\\
+		Villetaneuse, France \\
+		xhenis.coba@univ-paris13.fr, fangchen.feng@univ-paris13.fr, azeddine.beghdadi@univ-paris13.fr}
+}	
+
+\maketitle
+
+\begin{abstract}
+	We consider the blind image separation problem in the determined scenario. ICA and SCA approaches work well. Instead of looking for other property of image sources, we show that more sophisticated properties can be well exploited by using the plug-and-play approach. In particular, we show that the BM3D and Non-local Mean denoising methods can be well used for blind image separation. Moreover, we show that learning-based denoising approach can also be used. We illustrate the performance of using dictionary learning denoising method for separation. Then we apply the proposed approaches to document image restoration problem and show the advantages of the proposed approaches by numerical evaluations. 
+\end{abstract}
+
+
+\section{Introduction}
+The Blind Source Separation (BSS)~\cite{comon2010handbook} recovers source signals from observed mixtures without knowing the mixing system. The linear mixing model is:
+
+\begin{equation}
+\label{eq: linear mixing}
+\bx[i] = A \bs[i],
+\end{equation}
+where $i$ is the index of the pixel. $\bs$ is the concatenation of the source images $\bs[i] = [s_1[i], s_2[i], \ldots, s_N[i]]^T$ where $N$ is the number of sources. $\bx[i] = [x_1[i], x_2[i], \ldots, x_M[i]]^T$ where $M$ is the number of the mixtures. In this paper, we consider the determined scenario ($M = N$).
+
+ICA~\cite{hyvarinen2004independent} is the classical methods for blind source separation problem. It assumes that the sources are independent and it looks for a demixing matrix such that the separated components are as independent as possible. It is shown that if... then the ICA methods can estimate the sources up to a permutation and a scaling ambiguity. Since ICA methods rely on the high-order statistics for the separation, they can not work if more than one of the sources follows the Gaussian distribution.
+
+Another criteria for image separation is the sparsity~\cite{souidene2007blind, zibulevsky2001blind,bobin2007sparsity}. The sparsity component analysis approaches assume that the sources are sparse in the spatial domain or in some transformed domain. These approaches formulate the separation in an optimization framework and estimate simultaneously the mixing matrix and the source images. One of the advantage of SCA compared to ICA is that it works in the noisy cases. Several works are dedicated for exloiting the links between the ICA and SCA methods~\cite{feng2018revisiting}.
+
+Other criterias have also been investigated for separation. NMF~\cite{merrikh2010using} or CCA~\cite{boccuto2019blind}.
+
+Image denoising methods seek to remove perturbations or errors from observed image. The last three decades have seen extensive research devoted to this arena, and as a result, today's denoisers are highly optimized algorithms that effectively remove additive Gaussian noise. 
+
+Our contributions are as follows:
+
+In this paper, instead of looking for other criterias for image separation, we show in this paper that the image denoising methods can be used to capture the image properties through the plug-and-play approach in the section ??. We then introduce the document restoration problem in section ??. The numerical evaluations are presented in section ?? and we conclude the paper in section ??.  
+
+
+\section{Plug and play approach for image separation}
+\label{sec: plug and play}
+
+\subsection{Optimization framework}
+Both ICA and SCA in the determined noiseless cases can be formulated into the optimization framework as follows:
+\begin{equation}
+\label{eq: optimization framework}
+\argmin_{W, S} \frac{1}{2} \|W\bx - \bs\|_F^2 + \mathcal{P}(\bs) + \mathcal{G}(W)
+\end{equation}
+where $W$ is the separation matrix... 
+
+
+Alternating minimization~\cite{tseng2001convergence}...
+
+
+\subsection{Plug-and-play}
+The first sub-problem can be replaced by the image denoisers to capture the image properties. In this paper we show the separation performance of several denoisers
+wavelet-based method~\cite{donoho1994ideal,chang2000adaptive}
+TV-based method~\cite{chambolle2004algorithm}
+BM3D method~\cite{dabov2007image}
+Non-local Mean method~\cite{buades2005non}
+
+
+\section{Document restoration problem}
+\label{sec: document restoration}
+Old documents suffer from several degradations. 
+
+Based on the local stationary model, this problem can be formulated with the model~\eqref{eq: linear mixing}... 
+
+Some of them could very well be Gaussian.
+ 
+
+
+\section{Experiments}
+\label{sec: xp}
+
+
+\subsection{Plug and play in a general case}
+
+ 
+ 
+\subsection{Separation for document image restoration}
+
+
+
+\section{Conclusion}
+\label{sec: conclusion}
+For determined blind image separation problem, we show that the denoisers can be used for separation. Further denoiser can also be directly applied for separation task.
+
+\bibliographystyle{IEEEbib}
+\bibliography{biblio}
+
+\end{document}
