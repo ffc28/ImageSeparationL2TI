@@ -11,6 +11,12 @@ Aapo Hyv{\"a}rinen, Juha Karhunen, and Erkki Oja,
 \newblock {\em Independent component analysis}, vol.~46,
 \newblock John Wiley \& Sons, 2004.
 
+\bibitem{nordhausen2018independent}
+Klaus Nordhausen and Hannu Oja,
+\newblock ``Independent component analysis: A statistical perspective,''
+\newblock {\em Wiley Interdisciplinary Reviews: Computational Statistics}, vol.
+  10, no. 5, pp. e1440, 2018.
+
 \bibitem{souidene2007blind}
 Wided Souid{\`e}ne, Abdeldjalil A{\"\i}ssa-El-Bey, Karim Abed-Meraim, and
   Azeddine Beghdadi,
@@ -36,6 +42,14 @@ Fangchen Feng and Matthieu Kowalski,
   source separation for over and underdetermined mixtures,''
 \newblock {\em Signal Processing}, vol. 152, pp. 165--177, 2018.
 
+\bibitem{bronstein2005sparse}
+Alexander~M Bronstein, Michael~M Bronstein, Michael Zibulevsky, and Yehoshua~Y
+  Zeevi,
+\newblock ``Sparse ica for blind separation of transmitted and reflected
+  images,''
+\newblock {\em International Journal of Imaging Systems and Technology}, vol.
+  15, no. 1, pp. 84--91, 2005.
+
 \bibitem{merrikh2010using}
 Farnood Merrikh-Bayat, Massoud Babaie-Zadeh, and Christian Jutten,
 \newblock ``Using non-negative matrix factorization for removing
@@ -55,6 +69,25 @@ Paul Tseng,
   nondifferentiable minimization,''
 \newblock {\em Journal of optimization theory and applications}, vol. 109, no.
   3, pp. 475--494, 2001.
+
+\bibitem{venkatakrishnan2013plug}
+Singanallur~V Venkatakrishnan, Charles~A Bouman, and Brendt Wohlberg,
+\newblock ``Plug-and-play priors for model based reconstruction,''
+\newblock in {\em 2013 IEEE Global Conference on Signal and Information
+  Processing}. IEEE, 2013, pp. 945--948.
+
+\bibitem{chan2016plug}
+Stanley~H Chan, Xiran Wang, and Omar~A Elgendy,
+\newblock ``Plug-and-play admm for image restoration: Fixed-point convergence
+  and applications,''
+\newblock {\em IEEE Transactions on Computational Imaging}, vol. 3, no. 1, pp.
+  84--98, 2016.
+
+\bibitem{ono2017primal}
+Shunsuke Ono,
+\newblock ``Primal-dual plug-and-play image restoration,''
+\newblock {\em IEEE Signal Processing Letters}, vol. 24, no. 8, pp. 1108--1112,
+  2017.
 
 \bibitem{donoho1994ideal}
 David~L Donoho and Jain~M Johnstone,

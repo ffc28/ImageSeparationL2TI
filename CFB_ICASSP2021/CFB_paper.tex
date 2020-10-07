@@ -52,54 +52,57 @@
 \maketitle
 
 \begin{abstract}
-	We consider the blind image separation problem in the determined scenario. ICA and SCA approaches work well. Instead of looking for other property of image sources, we show that more sophisticated properties can be well exploited by using the plug-and-play approach. In particular, we show that the BM3D and Non-local Mean denoising methods can be well used for blind image separation. Moreover, we show that learning-based denoising approach can also be used. We illustrate the performance of using dictionary learning denoising method for separation. Then we apply the proposed approaches to document image restoration problem and show the advantages of the proposed approaches by numerical evaluations. 
+We consider the blind image separation problem in the determined scenario. The Independent Component Analysis (ICA) and the Sparse Component Analysis (SCA) are two classic approaches. Instead of looking for other properties of source images, we show that more sophisticated properties can be well exploited by using the plug-and-play approach for separation. In particular, we show that the BM3D and Non-local Means denoising methods lead to good image separation. We then apply the proposed approaches to document the image restoration problems and show the advantages of the proposed approaches by numerical evaluations. 
 \end{abstract}
 
 
 \section{Introduction}
-The Blind Source Separation (BSS)~\cite{comon2010handbook} recovers source signals from observed mixtures without knowing the mixing system. The linear mixing model is:
+The Blind Source Separation (BSS)~\cite{comon2010handbook} recovers source signals from observed mixtures without knowing the mixing system. The linear mixing model for image sources is:
 
 \begin{equation}
 \label{eq: linear mixing}
 \bx[i] = A \bs[i],
 \end{equation}
-where $i$ is the index of the pixel. $\bs$ is the concatenation of the source images $\bs[i] = [s_1[i], s_2[i], \ldots, s_N[i]]^T$ where $N$ is the number of sources. $\bx[i] = [x_1[i], x_2[i], \ldots, x_M[i]]^T$ where $M$ is the number of the mixtures. In this paper, we consider the determined scenario ($M = N$).
+where $i$ is the index of the pixel. $\bs$ is the concatenation of the source images $\bs[i] = [s_1[i], s_2[i], \ldots, s_N[i]]^T$ where $N$ is the number of sources. $\bx[i] = [x_1[i], x_2[i], \ldots, x_M[i]]^T$ with $M$ being the number of the mixtures. In this paper, we consider the determined scenario ($M = N$).
 
-ICA~\cite{hyvarinen2004independent} is the classical methods for blind source separation problem. It assumes that the sources are independent and it looks for a demixing matrix such that the separated components are as independent as possible. It is shown that if... then the ICA methods can estimate the sources up to a permutation and a scaling ambiguity. Since ICA methods rely on the high-order statistics for the separation, they can not work if more than one of the sources follows the Gaussian distribution.
+ICA~\cite{hyvarinen2004independent} is the classical method for BSS. It assumes that the sources are independent and looks for a demixing matrix such that the separated components are as independent as possible. Despite the good results, since ICA methods rely on the higher-order statistics for the separation, they can not work if more than one of the sources follows the Gaussian distribution~\cite{nordhausen2018independent}. Sparsity Component Analysis (SCA) is another well studied approach for BSS~\cite{souidene2007blind, zibulevsky2001blind,bobin2007sparsity}. This approach assumes that the sources are sparse in the spatial or a transformed domain. The separation problem is then formulated in an optimization framework and the estimation of the mixing matrix and the source images are performed simultaneously. One of the advantages of the SCA compared to the ICA is that it leads to better results if the mixtures are degraded with additive noise~\cite{bobin2007sparsity}. It's also important to notice that several works are dedicated to exploiting the links between the ICA and SCA methods~\cite{feng2018revisiting,bronstein2005sparse}.
 
-Another criteria for image separation is the sparsity~\cite{souidene2007blind, zibulevsky2001blind,bobin2007sparsity}. The sparsity component analysis approaches assume that the sources are sparse in the spatial domain or in some transformed domain. These approaches formulate the separation in an optimization framework and estimate simultaneously the mixing matrix and the source images. One of the advantage of SCA compared to ICA is that it works in the noisy cases. Several works are dedicated for exloiting the links between the ICA and SCA methods~\cite{feng2018revisiting}.
+Besides the independent and sparsity properties of the source images, other criteria have also been investigated for separation such as Non-negative Matrix Factorization (NMF)~\cite{merrikh2010using} and Canonical Correlation Analysis (CCA)~\cite{boccuto2019blind} for the document restoration application. For blind image separation, in the determined scenario, the different characteristics of the source images are used to constrain the demixing matrix. On the other hand, image denoising methods seek to remove perturbations or errors from the observed images based on the characteristics of images. Extensive research has been carried out on image denoising over the past three decades, which has led to highly optimized algorithms. In this paper, instead of searching for other characteristics for blind image separation, we propose to use the existing denoising approaches in a plug-and-play way for the separation. In particular, we show that the BM3D~\cite{dabov2007image} and the Nonlocal Mean~\cite{buades2005non} denoising methods lead to better separation than the existing approaches in terms of ??. It's the first time, to the best of our knowledge, that the BM3D and Nonlocal mean are used for image separation.
 
-Other criterias have also been investigated for separation. NMF~\cite{merrikh2010using} or CCA~\cite{boccuto2019blind}.
-
-Image denoising methods seek to remove perturbations or errors from observed image. The last three decades have seen extensive research devoted to this arena, and as a result, today's denoisers are highly optimized algorithms that effectively remove additive Gaussian noise. 
-
-Our contributions are as follows:
-
-In this paper, instead of looking for other criterias for image separation, we show in this paper that the image denoising methods can be used to capture the image properties through the plug-and-play approach in the section ??. We then introduce the document restoration problem in section ??. The numerical evaluations are presented in section ?? and we conclude the paper in section ??.  
+The reminder of this paper is organized as follows. In Section~\ref{sec: plug and play}, we describe the proposed separation approach with plug-and-play. We then apply the appraoch for the document restoration problem in Section~\ref{sec: document restoration}. The numerical evaluations are performed in Section~\ref{sec: xp} and we conclude the paper in Section~\ref{sec: conclusion}.  
 
 
 \section{Plug and play approach for image separation}
 \label{sec: plug and play}
 
 \subsection{Optimization framework}
-Both ICA and SCA in the determined noiseless cases can be formulated into the optimization framework as follows:
+Both ICA and SCA in the determined case can be formulated into the optimization framework~\cite{feng2018revisiting} as follows:
 \begin{equation}
 \label{eq: optimization framework}
-\argmin_{W, S} \frac{1}{2} \|W\bx - \bs\|_F^2 + \mathcal{P}(\bs) + \mathcal{G}(W)
+\argmin_{W, \bs} \frac{1}{2} \|W\bx - \bs\|_F^2 + \mathcal{P}(\bs) + \mathcal{G}(W)
 \end{equation}
-where $W$ is the separation matrix... 
+where $W$ is the demixing matrix... 
+
+
 
 
 Alternating minimization~\cite{tseng2001convergence}...
 
 
 \subsection{Plug-and-play}
+Plug and play~\cite{venkatakrishnan2013plug,chan2016plug,ono2017primal} has been used for image restoration.
+
 The first sub-problem can be replaced by the image denoisers to capture the image properties. In this paper we show the separation performance of several denoisers
 wavelet-based method~\cite{donoho1994ideal,chang2000adaptive}
 TV-based method~\cite{chambolle2004algorithm}
-BM3D method~\cite{dabov2007image}
-Non-local Mean method~\cite{buades2005non}
+BM3D method
+Non-local Mean method
 
+It's the first time that BM3D and Non-local Mean have been used for blind image separation.
+
+\subsection{Related methods}
+
+The difference between the proposed approach and the existing approach is that we have a more general framework. Future denoiser can be integrated.
 
 \section{Document restoration problem}
 \label{sec: document restoration}
