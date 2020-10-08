@@ -45,10 +45,17 @@ Fangchen Feng and Matthieu Kowalski,
 \bibitem{bronstein2005sparse}
 Alexander~M Bronstein, Michael~M Bronstein, Michael Zibulevsky, and Yehoshua~Y
   Zeevi,
-\newblock ``Sparse ica for blind separation of transmitted and reflected
+\newblock ``Sparse {ICA} for blind separation of transmitted and reflected
   images,''
 \newblock {\em International Journal of Imaging Systems and Technology}, vol.
   15, no. 1, pp. 84--91, 2005.
+
+\bibitem{boukouvalas2018sparsity}
+Zois Boukouvalas, Yuri Levin-Schwartz, Vince~D Calhoun, and T{\"u}lay Adal{\i},
+\newblock ``Sparsity and independence: Balancing two objectives in optimization
+  for source separation with application to fmri analysis,''
+\newblock {\em Journal of the Franklin Institute}, vol. 355, no. 4, pp.
+  1873--1887, 2018.
 
 \bibitem{merrikh2010using}
 Farnood Merrikh-Bayat, Massoud Babaie-Zadeh, and Christian Jutten,
@@ -62,6 +69,19 @@ Antonio Boccuto, Ivan Gerace, and Valentina Giorgetti,
 \newblock ``A blind source separation technique for document restoration,''
 \newblock {\em SIAM Journal on Imaging Sciences}, vol. 12, no. 2, pp.
   1135--1162, 2019.
+
+\bibitem{dabov2007image}
+Kostadin Dabov, Alessandro Foi, Vladimir Katkovnik, and Karen Egiazarian,
+\newblock ``Image denoising by sparse 3-d transform-domain collaborative
+  filtering,''
+\newblock {\em IEEE Transactions on image processing}, vol. 16, no. 8, pp.
+  2080--2095, 2007.
+
+\bibitem{buades2005non}
+Antoni Buades, Bartomeu Coll, and J-M Morel,
+\newblock ``A non-local algorithm for image denoising,''
+\newblock in {\em 2005 IEEE Computer Society Conference on Computer Vision and
+  Pattern Recognition (CVPR'05)}. IEEE, 2005, vol.~2, pp. 60--65.
 
 \bibitem{tseng2001convergence}
 Paul Tseng,
@@ -78,7 +98,7 @@ Singanallur~V Venkatakrishnan, Charles~A Bouman, and Brendt Wohlberg,
 
 \bibitem{chan2016plug}
 Stanley~H Chan, Xiran Wang, and Omar~A Elgendy,
-\newblock ``Plug-and-play admm for image restoration: Fixed-point convergence
+\newblock ``Plug-and-play {ADMM} for image restoration: Fixed-point convergence
   and applications,''
 \newblock {\em IEEE Transactions on Computational Imaging}, vol. 3, no. 1, pp.
   84--98, 2016.
@@ -107,17 +127,80 @@ Antonin Chambolle,
 \newblock {\em Journal of Mathematical imaging and vision}, vol. 20, no. 1-2,
   pp. 89--97, 2004.
 
-\bibitem{dabov2007image}
-Kostadin Dabov, Alessandro Foi, Vladimir Katkovnik, and Karen Egiazarian,
-\newblock ``Image denoising by sparse 3-d transform-domain collaborative
-  filtering,''
-\newblock {\em IEEE Transactions on image processing}, vol. 16, no. 8, pp.
-  2080--2095, 2007.
+\bibitem{elad2006image}
+Michael Elad and Michal Aharon,
+\newblock ``Image denoising via sparse and redundant representations over
+  learned dictionaries,''
+\newblock {\em IEEE Transactions on Image processing}, vol. 15, no. 12, pp.
+  3736--3745, 2006.
 
-\bibitem{buades2005non}
-Antoni Buades, Bartomeu Coll, and J-M Morel,
-\newblock ``A non-local algorithm for image denoising,''
-\newblock in {\em 2005 IEEE Computer Society Conference on Computer Vision and
-  Pattern Recognition (CVPR'05)}. IEEE, 2005, vol.~2, pp. 60--65.
+\bibitem{ichir2003wavelet}
+Mahieddine~M Ichir and Ali Mohammad-Djafari,
+\newblock ``Wavelet domain blind image separation,''
+\newblock in {\em Wavelets: Applications in Signal and Image Processing X}.
+  International Society for Optics and Photonics, 2003, vol. 5207, pp.
+  361--370.
+
+\bibitem{kutyniok2010image}
+Gitta Kutyniok and Wang-Q Lim,
+\newblock ``Image separation using wavelets and shearlets,''
+\newblock in {\em International Conference on Curves and Surfaces}. Springer,
+  2010, pp. 416--430.
+
+\bibitem{zhao2014blind}
+Xiaochen Zhao, Guangyu Zhou, Wei Dai, and Wenwu Wang,
+\newblock ``Blind source separation based on dictionary learning: a
+  singularity-aware approach,''
+\newblock in {\em Blind Source Separation}, pp. 39--59. Springer, 2014.
+
+\bibitem{sharma2001show}
+Gaurav Sharma,
+\newblock ``Show-through cancellation in scans of duplex printed documents,''
+\newblock {\em IEEE Transactions on Image Processing}, vol. 10, no. 5, pp.
+  736--754, 2001.
+
+\bibitem{tonazzini2015non}
+Anna Tonazzini, Pasquale Savino, and Emanuele Salerno,
+\newblock ``A non-stationary density model to separate overlapped texts in
+  degraded documents,''
+\newblock {\em Signal, Image and Video Processing}, vol. 9, no. 1, pp.
+  155--164, 2015.
+
+\bibitem{martinelli2012nonlinear}
+Francesca Martinelli, Emanuele Salerno, Ivan Gerace, and Anna Tonazzini,
+\newblock ``Nonlinear model and constrained ml for removing back-to-front
+  interferences from recto--verso documents,''
+\newblock {\em Pattern Recognition}, vol. 45, no. 1, pp. 596--605, 2012.
+
+\bibitem{moghaddam2009low}
+Reza~Farrahi Moghaddam and Mohamed Cheriet,
+\newblock ``Low quality document image modeling and enhancement,''
+\newblock {\em International Journal of Document Analysis and Recognition
+  (IJDAR)}, vol. 11, no. 4, pp. 183--201, 2009.
+
+\bibitem{almeida2008wavelet}
+Mariana~SC Almeida and Lu{\'\i}s~B Almeida,
+\newblock ``Wavelet-based separation of nonlinear show-through and
+  bleed-through image mixtures,''
+\newblock {\em Neurocomputing}, vol. 72, no. 1-3, pp. 57--70, 2008.
+
+\bibitem{tonazzini2004independent}
+Anna Tonazzini, Luigi Bedini, and Emanuele Salerno,
+\newblock ``Independent component analysis for document restoration,''
+\newblock {\em Document Analysis and Recognition}, vol. 7, no. 1, pp. 17--27,
+  2004.
+
+\bibitem{hanif2018non}
+Muhammad Hanif, Anna Tonazzini, Pasquale Savino, and Emanuele Salerno,
+\newblock ``Non-local sparse image inpainting for document bleed-through
+  removal,''
+\newblock {\em Journal of Imaging}, vol. 4, no. 5, pp. 68, 2018.
+
+\bibitem{tonazzini2007fast}
+Anna Tonazzini, Emanuele Salerno, and Luigi Bedini,
+\newblock ``Fast correction of bleed-through distortion in grayscale documents
+  by a blind source separation technique,''
+\newblock {\em International Journal of Document Analysis and Recognition
+  (IJDAR)}, vol. 10, no. 1, pp. 17--25, 2007.
 
 \end{thebibliography}

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (MiKTeX 2.9.7140 64-bit) (preloaded format=pdflatex 2019.10.1)  7 OCT 2020 19:11
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (MiKTeX 2.9.7140 64-bit) (preloaded format=pdflatex 2019.10.1)  8 OCT 2020 16:55
 entering extended mode
 **./CFB_paper.tex
 (CFB_paper.tex
@@ -470,9 +470,9 @@ LaTeX Font Info:    Try loading font information for U+stmry on input line 62.
 ) [1{C:/Users/FENG/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}
 
 
-]
+] [2]
 (CFB_paper.bbl
-Underfull \hbox (badness 2181) in paragraph at lines 74--78
+Underfull \hbox (badness 2181) in paragraph at lines 94--98
 []\OT1/ptm/m/n/8 Singanallur V Venkatakr-ish-nan, Charles A Bouman, and Brendt
  []
 
@@ -488,15 +488,15 @@ Before submitting the final camera ready copy, remember to:
  uses only Type 1 fonts and that every step in the generation
  process uses the appropriate paper size.
 
-[2] (CFB_paper.aux) ) 
+[3] (CFB_paper.aux) ) 
 Here is how much of TeX's memory you used:
- 5044 strings out of 492895
- 75133 string characters out of 3124202
- 160097 words of memory out of 3000000
- 8857 multiletter control sequences out of 15000+200000
+ 5061 strings out of 492895
+ 75422 string characters out of 3124202
+ 163165 words of memory out of 3000000
+ 8874 multiletter control sequences out of 15000+200000
  37381 words of font info for 77 fonts, out of 3000000 for 9000
  1144 hyphenation exceptions out of 8191
- 42i,8n,27p,1264b,255s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 42i,8n,27p,1219b,255s stack positions out of 5000i,500n,10000p,200000b,50000s
 {C:/Users/FENG/AppData/Local/Programs/MiKTeX 2.9/fonts/enc
 /dvips/base/8r.enc}<C:/Users/FENG/AppData/Local/Programs/MiKTeX 2.9/fonts/type1
 /public/amsfonts/cm/cmbx10.pfb><C:/Users/FENG/AppData/Local/Programs/MiKTeX 2.9
@@ -511,9 +511,9 @@ onts/cm/cmsy10.pfb><C:/Users/FENG/AppData/Local/Programs/MiKTeX 2.9/fonts/type1
 pe1/urw/times/utmbi8a.pfb><C:/Users/FENG/AppData/Local/Programs/MiKTeX 2.9/font
 s/type1/urw/times/utmr8a.pfb><C:/Users/FENG/AppData/Local/Programs/MiKTeX 2.9/f
 onts/type1/urw/times/utmri8a.pfb>
-Output written on CFB_paper.pdf (2 pages, 132762 bytes).
+Output written on CFB_paper.pdf (3 pages, 138585 bytes).
 PDF statistics:
- 54 PDF objects out of 1000 (max. 8388607)
+ 57 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 
