@@ -1,11 +1,9 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (MiKTeX 2.9.7140 64-bit) (preloaded format=pdflatex 2019.10.1)  8 OCT 2020 16:55
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (MiKTeX 2.9.7140 64-bit) (preloaded format=pdflatex 2019.10.1)  15 OCT 2020 19:39
 entering extended mode
 **./CFB_paper.tex
 (CFB_paper.tex
 LaTeX2e <2018-12-01>
-
-("C:\Users\FENG\AppData\Local\Programs\MiKTeX 2.9\tex/latex/ieeetran\IEEEtran.c
-ls"
+(IEEEtran.cls
 Document Class: IEEEtran 2015/08/26 V1.8b by Michael Shell
 -- See the "IEEEtran_HOWTO" manual for usage information.
 -- http://www.michaelshell.org/tex/ieeetran/
@@ -455,28 +453,62 @@ Package gensymb Info: Using \Omega for \ohm on input line 40.
 
 Package gensymb Warning: Not defining \micro.
 
-LaTeX Font Info:    Try loading font information for U+msa on input line 62.
+LaTeX Font Info:    Try loading font information for U+msa on input line 63.
 ("C:\Users\FENG\AppData\Local\Programs\MiKTeX 2.9\tex/latex/amsfonts\umsa.fd"
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 62.
+LaTeX Font Info:    Try loading font information for U+msb on input line 63.
 
 ("C:\Users\FENG\AppData\Local\Programs\MiKTeX 2.9\tex/latex/amsfonts\umsb.fd"
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
-LaTeX Font Info:    Try loading font information for U+stmry on input line 62.
+LaTeX Font Info:    Try loading font information for U+stmry on input line 63.
 
 ("C:\Users\FENG\AppData\Local\Programs\MiKTeX 2.9\tex/latex/stmaryrd\ustmry.fd"
-) [1{C:/Users/FENG/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}
+)
+
+LaTeX Warning: Reference `sec: document restoration' on page 1 undefined on inp
+ut line 78.
 
 
-] [2]
-(CFB_paper.bbl
-Underfull \hbox (badness 2181) in paragraph at lines 94--98
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [1{C:/Users/FENG/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}
+
+
+]
+<./fig/dictionary.pdf, id=17, 618.1025pt x 617.80812pt>
+File: ./fig/dictionary.pdf Graphic file (type pdf)
+<use ./fig/dictionary.pdf>
+Package pdftex.def Info: ./fig/dictionary.pdf  used on input line 131.
+(pdftex.def)             Requested size: 126.0pt x 125.93503pt.
+<./fig/test.pdf, id=18, 462.52798pt x 111.86139pt>
+File: ./fig/test.pdf Graphic file (type pdf)
+<use ./fig/test.pdf>
+Package pdftex.def Info: ./fig/test.pdf  used on input line 139.
+(pdftex.def)             Requested size: 516.0pt x 124.79913pt.
+<./fig/test_bm3d.pdf, id=19, 574.54652pt x 136.21324pt>
+File: ./fig/test_bm3d.pdf Graphic file (type pdf)
+<use ./fig/test_bm3d.pdf>
+Package pdftex.def Info: ./fig/test_bm3d.pdf  used on input line 146.
+(pdftex.def)             Requested size: 516.0pt x 122.34135pt.
+ (CFB_paper.bbl
+[2 <./fig/dictionary.pdf>]
+Underfull \vbox (badness 1917) has occurred while \output is active []
+
+
+Underfull \hbox (badness 2181) in paragraph at lines 131--135
 []\OT1/ptm/m/n/8 Singanallur V Venkatakr-ish-nan, Charles A Bouman, and Brendt
  []
 
-)
+
+Underfull \vbox (badness 1112) has occurred while \output is active []
+
+ [3 <./fig/test.pdf> <./fig/test_bm3d.pdf
+
+pdfTeX warning: pdflatex.exe (file ./fig/test_bm3d.pdf): PDF inclusion: multipl
+e pdfs with page group included in a single page
+>])
 
 ** Conference Paper **
 Before submitting the final camera ready copy, remember to:
@@ -488,32 +520,41 @@ Before submitting the final camera ready copy, remember to:
  uses only Type 1 fonts and that every step in the generation
  process uses the appropriate paper size.
 
-[3] (CFB_paper.aux) ) 
+[4
+
+] (CFB_paper.aux)
+
+LaTeX Warning: There were undefined references.
+
+ ) 
 Here is how much of TeX's memory you used:
- 5061 strings out of 492895
- 75422 string characters out of 3124202
- 163165 words of memory out of 3000000
- 8874 multiletter control sequences out of 15000+200000
- 37381 words of font info for 77 fonts, out of 3000000 for 9000
+ 5106 strings out of 492895
+ 75957 string characters out of 3124202
+ 158181 words of memory out of 3000000
+ 8905 multiletter control sequences out of 15000+200000
+ 42617 words of font info for 94 fonts, out of 3000000 for 9000
  1144 hyphenation exceptions out of 8191
- 42i,8n,27p,1219b,255s stack positions out of 5000i,500n,10000p,200000b,50000s
-{C:/Users/FENG/AppData/Local/Programs/MiKTeX 2.9/fonts/enc
-/dvips/base/8r.enc}<C:/Users/FENG/AppData/Local/Programs/MiKTeX 2.9/fonts/type1
-/public/amsfonts/cm/cmbx10.pfb><C:/Users/FENG/AppData/Local/Programs/MiKTeX 2.9
-/fonts/type1/public/amsfonts/cm/cmbx7.pfb><C:/Users/FENG/AppData/Local/Programs
-/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Users/FENG/AppData/Lo
-cal/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi7.pfb><C:/Users/FENG
-/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:
-/Users/FENG/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cm
-r7.pfb><C:/Users/FENG/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsf
-onts/cm/cmsy10.pfb><C:/Users/FENG/AppData/Local/Programs/MiKTeX 2.9/fonts/type1
-/urw/times/utmb8a.pfb><C:/Users/FENG/AppData/Local/Programs/MiKTeX 2.9/fonts/ty
-pe1/urw/times/utmbi8a.pfb><C:/Users/FENG/AppData/Local/Programs/MiKTeX 2.9/font
-s/type1/urw/times/utmr8a.pfb><C:/Users/FENG/AppData/Local/Programs/MiKTeX 2.9/f
-onts/type1/urw/times/utmri8a.pfb>
-Output written on CFB_paper.pdf (3 pages, 138585 bytes).
+ 42i,8n,27p,1272b,255s stack positions out of 5000i,500n,10000p,200000b,50000s
+{C:/Users/FENG/AppData/Local/Programs/MiKTeX 2.9/fonts/enc/dvips/base/8r.enc}
+<C:/Users/FENG/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm
+/cmbx10.pfb><C:/Users/FENG/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public
+/amsfonts/cm/cmbx7.pfb><C:/Users/FENG/AppData/Local/Programs/MiKTeX 2.9/fonts/t
+ype1/public/amsfonts/cm/cmmi10.pfb><C:/Users/FENG/AppData/Local/Programs/MiKTeX
+ 2.9/fonts/type1/public/amsfonts/cm/cmmi7.pfb><C:/Users/FENG/AppData/Local/Prog
+rams/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi8.pfb><C:/Users/FENG/AppData
+/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/F
+ENG/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr7.pfb><
+C:/Users/FENG/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/
+cmsy10.pfb><C:/Users/FENG/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/
+amsfonts/cm/cmsy7.pfb><C:/Users/FENG/AppData/Local/Programs/MiKTeX 2.9/fonts/ty
+pe1/public/amsfonts/symbols/msbm10.pfb><C:/Users/FENG/AppData/Local/Programs/Mi
+KTeX 2.9/fonts/type1/urw/times/utmb8a.pfb><C:/Users/FENG/AppData/Local/Programs
+/MiKTeX 2.9/fonts/type1/urw/times/utmbi8a.pfb><C:/Users/FENG/AppData/Local/Prog
+rams/MiKTeX 2.9/fonts/type1/urw/times/utmr8a.pfb><C:/Users/FENG/AppData/Local/P
+rograms/MiKTeX 2.9/fonts/type1/urw/times/utmri8a.pfb>
+Output written on CFB_paper.pdf (4 pages, 356981 bytes).
 PDF statistics:
- 57 PDF objects out of 1000 (max. 8388607)
+ 296 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
- 1 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 16 words of extra memory for PDF output out of 10000 (max. 10000000)
 

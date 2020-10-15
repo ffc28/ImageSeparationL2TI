@@ -52,40 +52,44 @@
 \maketitle
 
 \begin{abstract}
-We consider the blind image separation problem in the determined scenario. The Independent Component Analysis (ICA) and the Sparse Component Analysis (SCA) are two classic approaches. Instead of looking for other properties of source images, we show that more sophisticated properties can be well exploited by using the plug-and-play approach for separation. In particular, we show that the BM3D and Non-local Means denoising methods lead to good image separation. We then apply the proposed approaches to document the image restoration problems and show the advantages of the proposed approaches by numerical evaluations. 
+We consider the blind image separation problem for document restoration. The existing methods rely on the general properties of source images such as independence, sparsity, non-negativity, and correlation. Instead of looking for other characteristics, we show in this paper that image-specified properties can be exploited through the plug-and-play approach for separation. In particular, we show that the BM3D and Non-local Means denoising methods, which exploit the nonlocal property, lead to better image separation in terms of the convergence rate. We then apply the proposed approaches to document the image restoration problems and show the advantages of the proposed approaches by numerical evaluations. 
 \end{abstract}
 
 
 \section{Introduction}
-The Blind Source Separation (BSS)~\cite{comon2010handbook} recovers source signals from observed mixtures without knowing the mixing system. The linear mixing model for image sources is:
+Old documents often suffer from the problem of the show-through and bleed-through effect. Show-through is a front-to-back interference, mainly due to the scanning process and the transparency of the paper, which
+causes the text in the verso side of the document to appear also in the recto side (and vice versa)~\cite{sharma2001show}. Bleed-through is an intrinsic front-to-back physical deterioration due to ink seeping and produces an effect similar to that of show-through~\cite{boccuto2019blind}. Despite the complex physical model of the process which depends on the features of the paper, the transmittance parameters, the reflectance of the verso, and the spreading of light in the paper~\cite{tonazzini2015non,martinelli2012nonlinear,moghaddam2009low,almeida2008wavelet}, the following nonstationary linear model is well adapted to these effects locally~\cite{boccuto2019blind}:
 
 \begin{equation}
 \label{eq: linear mixing}
 \bx[i] = A \bs[i],
 \end{equation}
-where $i$ is the index of the image pixels. $\bs$ is the concatenation of the source images $\bs[i] = [s_1[i], s_2[i], \ldots, s_N[i]]^T$ where $N$ is the number of sources. $\bx[i] = [x_1[i], x_2[i], \ldots, x_M[i]]^T$ with $M$ being the number of the mixtures. In this paper, we consider the determined scenario ($M = N$).
+where $i$ is the index of the image pixels. $\bs$ is the concatenation of the source images in grayscale $\bs[i] = [s_r[i], s_v[i]]^T$ where $s_r[i]$ and $s_v[i]$ are the recto and verso sides (with a horizontal flip) of the source images respectively. $\bx[i] = [x_r[i], x_v[i]]^T$ with $x_r[i]$ and $x_v[i]$ being the observed recto and verso side images. $A\in\CC^{2 \times 2}$ is the mixing matrix. The target of the document restoration is to recover the source images $\bs[i]$ from the observed recto-verso mixtures $\bx[i]$ without knowing the mixing matrix $A$. This problem falls in the framework of Blind Source Separation (BSS)~\cite{comon2010handbook}.
 
-ICA~\cite{hyvarinen2004independent} is a classical method for BSS. It assumes that the sources are independent and looks for a demixing matrix such that the separated components are as independent as possible. Despite the good results, since ICA methods rely on the higher-order statistics for the separation, they can not work if more than one of the sources follows the Gaussian distribution~\cite{nordhausen2018independent}. Sparsity Component Analysis (SCA) is another well studied approach for BSS~\cite{souidene2007blind, zibulevsky2001blind,bobin2007sparsity}. This approach assumes that the sources are sparse in the spatial or a transformed domain. The separation problem is then formulated in an optimization framework and the estimation of the mixing matrix and the source images are performed simultaneously. One of the advantages of the SCA compared to the ICA is that it leads to better results if the mixtures are degraded with additive noise~\cite{bobin2007sparsity}. It's also important to notice that several works are dedicated to exploiting the links between the ICA and SCA methods~\cite{feng2018revisiting,bronstein2005sparse,boukouvalas2018sparsity}.
+
+ICA~\cite{hyvarinen2004independent} is a classical method for BSS. It assumes that the sources are independent and looks for a demixing matrix such that the separated components are as independent as possible~\cite{tonazzini2004independent}. Despite the good results in numerious domains, since ICA methods rely on the higher-order statistics for the separation, they can not work if more than one of the sources follows the Gaussian distribution~\cite{nordhausen2018independent}. Sparsity Component Analysis (SCA) is another well studied approach for BSS~\cite{souidene2007blind, zibulevsky2001blind,bobin2007sparsity}. This approach assumes that the sources are sparse in the spatial or a transformed domain. The separation problem is then formulated in an optimization framework and the estimation of the mixing matrix and the source images are performed simultaneously. One of the advantages of the SCA compared to the ICA is that it leads to better results if the mixtures are degraded with additive noise~\cite{bobin2007sparsity}. It's also important to notice that several works are dedicated to exploiting the links between the ICA and SCA methods~\cite{feng2018revisiting,bronstein2005sparse,boukouvalas2018sparsity}.
 
 Besides the independent and sparsity properties of the source images, other criteria have also been investigated for separation such as Non-negative Matrix Factorization (NMF)~\cite{merrikh2010using} and Canonical Correlation Analysis (CCA)~\cite{boccuto2019blind} for the document restoration application. 
 
-For blind image separation, in the determined scenario, the different characteristics of the source images are used to constrain the demixing matrix. On the other hand, image denoising methods seek to remove perturbations or errors from the observed images based on the characteristics of images. Extensive research has been carried out on image denoising over the past three decades, which has led to highly optimized algorithms. In this paper, instead of searching for other characteristics for blind image separation, we propose to use the existing denoising approaches in a plug-and-play way for the separation. In particular, we show that the BM3D~\cite{dabov2007image} and the Nonlocal Mean~\cite{buades2005non} denoising methods lead to better separation than the existing approaches in terms of ??. It's the first time, to the best of our knowledge, that the BM3D and Nonlocal mean are used for image separation.
+For blind image separation, in the determined scenario, the demixing matrix is estimated based on different characteristics of the source images. On the other hand, image denoising methods seek to remove perturbations or errors from the observed images based on the characteristics of images. Extensive research has been carried out on image denoising over the past three decades, which has led to highly optimized algorithms. In this paper, instead of searching for other characteristics for blind image separation, we propose to use the existing denoising approaches in a plug-and-play way for the separation. In particular, we show that the BM3D~\cite{dabov2007image} and the Nonlocal Mean~\cite{buades2005non} denoising methods lead to better separation than the existing approaches in terms of ??. It's the first time, to the best of our knowledge, that the BM3D and Nonlocal mean are used for image separation.
+
+The contribution of the paper is as follows:
 
 The reminder of this paper is organized as follows. In Section~\ref{sec: plug and play}, we describe the proposed separation approach with plug-and-play. We then apply the appraoch for the document restoration problem in Section~\ref{sec: document restoration}. The numerical evaluations are performed in Section~\ref{sec: xp} and we conclude the paper in Section~\ref{sec: conclusion}.  
 
 
-\section{Plug and play approach for image separation}
+\section{Plug-and-play approach for image separation}
 \label{sec: plug and play}
 
 \subsection{Optimization framework}
 Both ICA and SCA in the determined case can be formulated into the optimization framework~\cite{feng2018revisiting} as follows:
 \begin{equation}
 \label{eq: optimization framework}
-\argmin_{W, \bs} \frac{1}{2} \|W\bx - \bs\|_F^2 + \mathcal{P}(\bs) + \mathcal{G}(W)
+\argmin_{W, \bs} \frac{1}{2} \|W\bx - \bs\|_F^2 + \mathcal{P}(\bs) + \mathcal{G}(W),
 \end{equation}
-where $W$ is the demixing matrix. $\mathcal{P}(\bs)$ is the penalty term based on the characterestics of the source images. $\mathcal{G}(W)$ is the constraint of the demixing matrix. For ICA approaches, $\mathcal{P}(\bs)$ is the independence measure for the sources and $\mathcal{G}(W)$ is the unitary constaint. It's important to notice that the unitary constraint of the demixing matrix, along with the whitening pre-processing, lead to the decorrelation constraint of the sources. For SCA, $\mathcal{P}(\bs)$ is the sparse penalty in the spatial or a transformed domain while $\mathcal{G}(W)$ is the unit-norm constraint of the estimated mixing matrix.
+where $W$ is the demixing matrix. $\|\cdot\|_F$ denotes the Frobenius norm of matrix. $\mathcal{P}(\bs)$ is the penalty term based on the characterestics of the source images. $\mathcal{G}(W)$ is the constraint of the demixing matrix. For ICA approaches, $\mathcal{P}(\bs)$ is the independence measurement for the sources and $\mathcal{G}(W)$ is the unitary constaint which leads to the decorrelation constraint of the sources, along with the whitening pre-processing. For SCA, $\mathcal{P}(\bs)$ is the sparse penalty in the spatial or a transformed domain and $\mathcal{G}(W)$ is the unit-norm constraint of the estimated mixing matrix.
 
-The above problem~\eqref{eq: optimization framework} can be solved with the alternating minimization~\cite{tseng2001convergence}. In each iteration, we solve the two following sub-problems:
+The above optimization problem~\eqref{eq: optimization framework} in the general form can be solved with the iterative alternating minimization~\cite{tseng2001convergence}. In each iteration, we solve the two following sub-problems in an alternating way until convergence.:
 \begin{equation}
 \label{eq: subpb1}
 	\argmin_{\bs} \frac{1}{2} \|W\bx - \bs\|_F^2 + \mathcal{P}(\bs),
@@ -93,50 +97,61 @@ The above problem~\eqref{eq: optimization framework} can be solved with the alte
 and 
 \begin{equation}
 \label{eq: subpb2}
-\argmin_{W} \frac{1}{2} \|W\bx - \bs\|_F^2 + \mathcal{G}(W),
+\argmin_{W} \frac{1}{2} \|W\bx - \bs\|_F^2 + \mathcal{G}(W).
 \end{equation}
-and these two sub-problems are solved in an alternating way until convergence.
-The sub-problem~\eqref{eq: subpb1} is directly related to the classical denoising problem for additive Gaussian noise. The plug-and-play~\cite{venkatakrishnan2013plug,chan2016plug,ono2017primal} approach consists of replacing the denoising formulation by existing denoising approaches even the denoising algorithms do not necessarily corresponds to any penalty term. In this paper, we illustrate the separation results using the Wavelet-based~\cite{donoho1994ideal,chang2000adaptive}, Total-Variation (TV) minimization denoising~\cite{chambolle2004algorithm}, BM3D denoising~\cite{dabov2007image}, Nonlocal mean~\cite{buades2005non}, and dictionary-learning~\cite{elad2006image} based denoising approaches.
 
-The proposed algorithm is resumed as follows:
+The sub-problem~\eqref{eq: subpb1} is directly related to the classical denoising problem for additive Gaussian noise. The plug-and-play~\cite{venkatakrishnan2013plug,chan2016plug,ono2017primal} approach consists of replacing the denoising formulation by existing denoising approaches. It's important to note that the denoising algorithms do not necessarily correspond to any penalty term in closed form. In this paper, we illustrate the separation results using the Wavelet-based~\cite{donoho1994ideal,chang2000adaptive}, Total-Variation (TV) minimization~\cite{chambolle2004algorithm}, BM3D~\cite{dabov2007image}, and Non-local mean~\cite{buades2005non} denoising approaches.
+
+The sub-problem~\eqref{eq: subpb2} can be solved with the gradient descend approach with the whitening projection. The proposed algorithm is resumed as follows:
+
+
+
 
 \subsection{Related methods}
-The proposed framework englobes several existing separation approaches. When the wavelet-based denoiser is used, the proposed approach is closely related to the method proposed in~\cite{ichir2003wavelet} and~\cite{kutyniok2010image}. When the TV denoiser is used, the proposed approach is related to the existing method in~\cite{souidene2007blind}. The approach is closely related to the methods discussed in~\cite{zhao2014blind} if the dictionary-learning approach is used as the denoiser.
+The proposed framework englobes several existing separation approaches. When the wavelet-based denoiser is used, the proposed approach is closely related to the method proposed in~\cite{ichir2003wavelet} and~\cite{kutyniok2010image}. When the TV denoiser is used, the proposed approach is related to the sparsity-based method in~\cite{souidene2007blind}. The approach is closely related to the methods discussed in~\cite{zhao2014blind} if the dictionary-learning approach is used as the denoiser.
 
-The difference between the proposed framework and the existing methods is that...
-
-
-\section{Document restoration problem}
-\label{sec: document restoration}
-
-\subsection{Linear mixing model}
-Old documents often suffer from the problem of the show-through and bleed-through effect. Show-through is a front-to-back interference, mainly due to the scanning process and the transparency of the paper, which
-causes the text in the verso side of the document to appear also in the recto side (and vice versa)~\cite{sharma2001show}. Bleed-through is an intrinsic front-to-back physical deterioration due to ink seeping and produces an effect similar to that of show-through~\cite{boccuto2019blind}. Although the physical model of the process is very complex which depends on the features of the paper, the transmittance parameters, the reflectance of the verso, and the spreading of light in the paper~\cite{tonazzini2015non,martinelli2012nonlinear,moghaddam2009low,almeida2008wavelet}, it's shown in~\cite{boccuto2019blind} that a nonstationary locally linear model as in~\eqref{eq: linear mixing} is well adapted to these effects.
-
-As a classical approach, ICA was initially used for this problem of document restoration in~\cite{tonazzini2004independent}. However, as we show in the experiment sections, the approach is limited due to the Gaussian distribution of certains source images. Sparsity property of document images is also considered in~\cite{hanif2018non} in the framework of image inpainting. 
+\subsection{Dictionary learning for visual chirality}
+For document image restoration from scanned recto-verso pages of document, the two original document images are mixed with one of them horizontally flipped. Recently, it's shown in~\cite{lin2020visual} that text is a strong signal for high-level visual chirality which is a fundemantal property of images. However, classical denoising approaches (Wavelet-based, TV minimization, BM3D, and Non-local mean) do not exploit such property of images. In this paper, we propose to use the dictionary-learning~\cite{elad2006image} approach to exploit such property. More precisely, we...
 
 
-\subsection{Extra constraints on the mixing matrix}
- the mixing matrix should be symmetric or not~\cite{tonazzini2007fast}?
 
-
-\section{Experiments}
+\section{Numerical evaluation}
 \label{sec: xp}
-
+We first test the proposed approach in a general case for natural scene images. We then investigate the application of the proposed approach for document restoration in various scenarios.
 
 \subsection{Plug and play in a general case}
 
  
  
 \subsection{Separation for document image restoration}
+ the mixing matrix should be symmetric or not~\cite{tonazzini2007fast}?
+
+ \begin{figure}[ht!]
+	\centering
+	\includegraphics[width=0.5\linewidth]{./fig/dictionary.pdf}
+	\caption{The learned dictionary.}
+	\label{fig: dictionary result}
+\end{figure}
 
 
+ \begin{figure*}[ht!]
+	\centering
+	\includegraphics[width=\linewidth]{./fig/test.pdf}
+	\caption{The denoising results of TV with different $\sigma$.}
+	\label{fig: TV denoiser}
+\end{figure*}
+
+ \begin{figure*}[ht!]
+	\centering
+	\includegraphics[width=\linewidth]{./fig/test_bm3d.pdf}
+	\caption{The denoising results of BM3D with different $\sigma$.}
+	\label{fig: bm3d denoiser}
+\end{figure*}
 
 \section{Conclusion}
 \label{sec: conclusion}
 For determined blind image separation problem, we show that the denoisers can be used for separation. Further denoiser can also be directly applied for separation task.
 
-\newpage
 
 \bibliographystyle{IEEEbib}
 \bibliography{biblio}
