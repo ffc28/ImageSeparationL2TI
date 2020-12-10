@@ -203,8 +203,6 @@ def three_channel_mix(im1, im2, A):
     return x1, x2
 
     
-    
-
 # remove the mean value of each channel (RGB). However, we keep the scale of the three channel unchanged
 #img1, v1 = remove_mean(img1)
 #img2, v2 = remove_mean(img2)
