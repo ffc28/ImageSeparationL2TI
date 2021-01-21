@@ -34,13 +34,13 @@ We mixed our original sources using a rotation mixing matrix with an angle of 45
 We used the state-of-the-art ICA method to separate the mixtures of old documents. The results obtained are the foillowing:
 
 <p float="left">
-  <img src="/Code/FastICA_experiments/images/estimated_sources_ica_theta45_set1.png" width="450" />
-  <img src="/Code/FastICA_experiments/images/estimated_sources_ica_theta45_set2.png" width="450" /> 
+  <img src="/Code/FastICA_experiments/images/estimated_sources_ica_theta45_set1.png" width="400" />
+  <img src="/Code/FastICA_experiments/images/estimated_sources_ica_theta45_set2.png" width="400" /> 
 </p>
 
 <p float="left">
-  <img src="/Code/FastICA_experiments/images/estimated_sources_ica_theta45_set3.png" width="300" />
-  <img src="/Code/FastICA_experiments/images/estimated_sources_ica_theta45_set4.png" width="300" />
+  <img src="/Code/FastICA_experiments/images/estimated_sources_ica_theta45_set3.png" width="350" />
+  <img src="/Code/FastICA_experiments/images/estimated_sources_ica_theta45_set4.png" width="350" />
   <img src="/Code/FastICA_experiments/images/estimated_sources_ica_theta45_set5.png" width="300" />
 </p>
 
