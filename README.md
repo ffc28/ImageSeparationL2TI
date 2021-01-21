@@ -33,29 +33,29 @@ We mixed our original sources using a rotation mixing matrix with an angle of 45
 
 We used the state-of-the-art ICA method to separate the mixtures of old documents. The results obtained are the foillowing:
 
-<p float="left">
+<p float="center">
   <img src="/Code/FastICA_experiments/images/estimated_sources_ica_theta45_set1.png" width="400" />
   <img src="/Code/FastICA_experiments/images/estimated_sources_ica_theta45_set2.png" width="400" /> 
 </p>
 
-<p float="left">
-  <img src="/Code/FastICA_experiments/images/estimated_sources_ica_theta45_set3.png" width="350" />
-  <img src="/Code/FastICA_experiments/images/estimated_sources_ica_theta45_set4.png" width="350" />
-  <img src="/Code/FastICA_experiments/images/estimated_sources_ica_theta45_set5.png" width="300" />
+<p float="center">
+  <img src="/Code/FastICA_experiments/images/estimated_sources_ica_theta45_set3.png" width="400" />
+  <img src="/Code/FastICA_experiments/images/estimated_sources_ica_theta45_set4.png" width="400" />
+  <img src="/Code/FastICA_experiments/images/estimated_sources_ica_theta45_set5.png" width="400" />
 </p>
 
 ## Our approach
 
 The proposed Double Dictionary Learning approach seprarates the mixed sources better than FastICA. This can be seen qualitatively and quantitatively (Mean SSIM).
 
-<p float="left">
-  <img src="/Code/DL_experiments/estimated_sources_dl_filtered_theta45_set1.png" width="450" />
-  <img src="/Code/DL_experiments/estimated_sources_dl_filtered_theta45_set2.png" width="450" />
+<p float="center">
+  <img src="/Code/DL_experiments/estimated_sources_dl_filtered_theta45_set1.png" width="400" />
+  <img src="/Code/DL_experiments/estimated_sources_dl_filtered_theta45_set2.png" width="400" />
 </p>
 
-<p float="left">
-  <img src="/Code/DL_experiments/estimated_sources_dl_filtered_theta45_set3.png" width="300" />
-  <img src="/Code/DL_experiments/estimated_sources_dl_filtered_theta45_set4.png" width="300" />
-  <img src="/Code/DL_experiments/estimated_sources_dl_filtered_theta45_set5.png" width="300" />
+<p float="center">
+  <img src="/Code/DL_experiments/estimated_sources_dl_filtered_theta45_set3.png" width="400" />
+  <img src="/Code/DL_experiments/estimated_sources_dl_filtered_theta45_set4.png" width="400" />
+  <img src="/Code/DL_experiments/estimated_sources_dl_filtered_theta45_set5.png" width="400" />
 
 </p>
