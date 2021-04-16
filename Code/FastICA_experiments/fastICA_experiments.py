@@ -2,10 +2,20 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
+import scipy.linalg as la
 from mixing_models import load_images, linear_mixture
 from sklearn.decomposition import FastICA
 from skimage.metrics import structural_similarity as ssim
 from functions import unflatten
+
+def whiten_projection(S):
+    """
+    This function does the whitening projection with PCA
+    """
+    R = np.dot(S, S.T)
+    W = la.sqrtm(np.linalg.inv(R))
+    
+    return W, np.dot(W, S)
 
 n = 256
 image_size = (n, n)
@@ -19,6 +29,8 @@ mixing_matrix = [[np.cos(theta), -np.sin(theta)], [np.sin(theta), np.cos(theta)]
 
 sources, mixtures = linear_mixture(source1, source2, mixing_matrix = mixing_matrix, show_images = False)
 
+W_whiten, mixtures = whiten_projection(mixtures)
+
 mix1, mix2 = unflatten(mixtures, image_size)
 plt.figure()
 plt.suptitle(f'Mixtures, theta = {d}')
@@ -31,11 +43,16 @@ plt.axis('off')
 plt.tight_layout()
 plt.show
 
-ica = FastICA(n_components=2, fun = 'cube', max_iter = 20000)
+ica = FastICA(n_components=2, fun = 'cube', max_iter = 2000)
 estimated_sources = ica.fit_transform(mixtures.T)
 mixing_estimated = ica.mixing_
+W_demix = np.linalg.inv(mixing_estimated)
+
+matrix_direct = np.dot(np.dot(W_demix, W_whiten), mixing_matrix)
 
 estimated1, estimated2 = unflatten(estimated_sources.T, image_size)
+estimated1 = estimated1/matrix_direct[0, 0]
+estimated2 = estimated2/matrix_direct[1, 1]
 
 ssim1 = ssim(source1, estimated1, data_range = estimated1.max()- estimated1.min())
 ssim2 = ssim(source2, estimated2, data_range = estimated2.max()- estimated2.min())
